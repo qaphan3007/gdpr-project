@@ -1,32 +1,23 @@
-import Phaser from "phaser";
-import logoImg from "./assets/logo.png";
+import Phaser from 'phaser';
+import config from './config/config';
+import ReceptionScene from './scenes/ReceptionScene';
+import TrainingScene from './scenes/TrainingScene';
+import PhoneScene from './scenes/PhoneScene';
 
-const config = {
-  type: Phaser.AUTO,
-  parent: "phaser-example",
-  width: 800,
-  height: 600,
-  scene: {
-    preload: preload,
-    create: create
-  }
-};
+class Game extends Phaser.Game {
+	constructor () {
+		super(config); // This Game object has config loaded from config.js
+		// Load all scenes		
+		this.scene.add('Reception', ReceptionScene);
+		this.scene.add('Training', TrainingScene);
+		this.scene.add('Phone', PhoneScene);
 
-const game = new Phaser.Game(config);
-
-function preload() {
-  this.load.image("logo", logoImg);
+		// Initialize the game on the first scene
+		this.scene.start('Training');
+	}
 }
 
-function create() {
-  const logo = this.add.image(400, 150, "logo");
-
-  this.tweens.add({
-    targets: logo,
-    y: 450,
-    duration: 2000,
-    ease: "Power2",
-    yoyo: true,
-    loop: -1
-  });
+window.onload = function () {
+	// Initialize the Phaser.Game object
+	window.game = new Game();
 }
