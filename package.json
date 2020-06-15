@@ -33,6 +33,7 @@
     "webpack-merge": "^4.2.2"
   },
   "dependencies": {
+    "firebase": "^7.15.1",
     "phaser": "^3.20.1"
   }
 }
