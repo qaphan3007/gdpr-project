@@ -3,6 +3,7 @@ import config from './config/config';
 import ReceptionScene from './scenes/ReceptionScene';
 import TrainingScene from './scenes/TrainingScene';
 import PhoneScene from './scenes/PhoneScene';
+import TestScene from './scenes/TestScene';
 
 class Game extends Phaser.Game {
 	constructor () {
@@ -10,6 +11,7 @@ class Game extends Phaser.Game {
 		// Load all scenes		
 		this.scene.add('Reception', ReceptionScene);
 		this.scene.add('Training', TrainingScene);
+		this.scene.add('Test', TestScene);
 		this.scene.add('Phone', PhoneScene);
 
 		// Initialize the game on the first scene

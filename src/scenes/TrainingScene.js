@@ -7,12 +7,12 @@ class TrainingScene extends Phaser.Scene {
 
     preload () {
         this.load.image('trainingRoom', './src/assets/training-room.png');
-        this.load.image('transparentBox', 'src/assets/transparent-rect.png');
-        this.load.image('closeTraining', 'src/assets/close-button.png');
-        this.load.image('trainButton', 'src/assets/train-button.png');
-        this.load.image('greyTrainButton', 'src/assets/grey-train-button.png');
+        this.load.image('transparentBox', './src/assets/transparent-rect.png');
+        this.load.image('closeTraining', './src/assets/close-button.png');
+        this.load.image('trainButton', './src/assets/train-button.png');
+        this.load.image('greyTrainButton', './src/assets/grey-train-button.png');
         this.load.image('phoneIcon', './src/assets/phone-icon.png');
-        this.load.image('phoneScreen', './src/assets/phone-screen.png' );
+        this.load.image('phoneScreen', './src/assets/phone-screen.png');
     }
 
     create () {
@@ -59,13 +59,12 @@ class TrainingScene extends Phaser.Scene {
         const learnButton = this.add.image(300, 300, 'greyTrainButton');
         this.add.text(205, 285, 'LEARN ABOUT GDPR', { fontFamily: 'Myriad Pro', fontSize: '30px', color: '#ffffff'});
         learnButton.setScale(.75);
-        learnButton.setInteractive({ useHandCursor: true });
 
         const testButton = this.add.image(720, 300, 'greyTrainButton');
         this.add.text(610, 285, 'TEST YOUR KNOWLEDGE', { fontFamily: 'Myriad Pro', fontSize: '30px', color: '#ffffff'});
         testButton.setScale(.75);
         testButton.setInteractive({ useHandCursor: true });
-
+        testButton.on('pointerdown', () => this.scene.start('Test'));
 
         // Closing the training tab simply restarts the scene to its initial state
         const closeTrainingButton = this.add.image(50, 50, 'closeTraining');

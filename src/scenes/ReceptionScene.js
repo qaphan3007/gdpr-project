@@ -1,7 +1,4 @@
 import 'phaser';
-import receptionImg from '../assets/reception.png'; // Load image relatively from this file
-import phoneIconImg from '../assets/phone-icon.png';
-import phoneScreenImg from '../assets/phone-screen.png'
 
 class ReceptionScene extends Phaser.Scene {
     constructor() {
