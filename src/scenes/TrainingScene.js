@@ -23,9 +23,7 @@ class TrainingScene extends Phaser.Scene {
 
 		 // Initialize Cloud Firestore through Firebase
 		var db = firebaseApp.firestore();
-		db.settings({
-			timestampsInSnapshots: true
-        })
+	
         /*     
         db.collection("cities").doc("LA").set({
             name: "Los Angeles",
