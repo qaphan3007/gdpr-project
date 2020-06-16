@@ -1,6 +1,4 @@
 import 'phaser';
-import firebaseConfig from '../config/firebaseConfig';
-import firebase from 'firebase/app';
 import 'firebase/firestore';
 
 class TrainingScene extends Phaser.Scene {
@@ -19,24 +17,6 @@ class TrainingScene extends Phaser.Scene {
     }
 
     create () {
-        const firebaseApp = firebase.initializeApp(firebaseConfig);
-
-		 // Initialize Cloud Firestore through Firebase
-		var db = firebaseApp.firestore();
-	
-        /*     
-        db.collection("cities").doc("LA").set({
-            name: "Los Angeles",
-            state: "CA",
-            country: "USA"
-        })
-        .then(function() {
-            console.log("Document successfully written!");
-        })
-        .catch(function(error) {
-            console.error("Error writing document: ", error);
-        });
-        */
         const config = this.sys.game.config;
         const bg = this.add.image(0, 0, 'trainingRoom');
         

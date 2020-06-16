@@ -28,9 +28,13 @@ class PhoneScene extends Phaser.Scene {
 		const config = this.sys.game.config;
 		
 		// Add a new background as the previous scene's background
+		/*
 		const bg = this.add.image(config.width/2, config.height/2, 'background');
 		bg.displayHeight = config.height;
-        bg.scaleX = bg.scaleY;
+		bg.scaleX = bg.scaleY;*/
+		//this.cameras.main.backgroundColor = Phaser.Display.Color.HexStringToColor("#ffff00");
+		this.cameras.main.setBackgroundColor('#A9A9A9')
+
 
 		// Add phone screen and place it in the middle of the scene
         const phoneScreen = this.add.image(config.width/2, config.height/2, 'phoneScreen');

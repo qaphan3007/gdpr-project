@@ -19,18 +19,27 @@ class Game extends Phaser.Game {
 
 		// Initialize the game on the first scene
 		this.scene.start('Training');
-	}
 
-	create () {
+		// Initialize the database
 		const firebaseApp = firebase.initializeApp(firebaseConfig);
 
-		 // Initialize Cloud Firestore through Firebase
-		var db = firebaseApp.firestore();
-		db.settings({
-			timestampsInSnapshots: true
-		})
-		console.log('AAAAHHHH')
-		console.log(db)
+		// Initialize Cloud Firestore through Firebase
+		// Access this variable through this.sys.game.db
+		this.db = firebaseApp.firestore();
+	
+        /*     
+        db.collection("cities").doc("LA").set({
+            name: "Los Angeles",
+            state: "CA",
+            country: "USA"
+        })
+        .then(function() {
+            console.log("Document successfully written!");
+        })
+        .catch(function(error) {
+            console.error("Error writing document: ", error);
+        });
+        */
 	}
 }
 
