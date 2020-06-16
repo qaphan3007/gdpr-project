@@ -31,7 +31,8 @@ class TrainingScene extends Phaser.Scene {
         const phoneIcon = this.add.image(1000, 530, 'phoneIcon');
         phoneIcon.setScale(.7);
         phoneIcon.setInteractive({ useHandCursor: true });  // Cursor style change when hovering 
-        phoneIcon.on('pointerdown', () => this.openPhone()); // pointerdown = onClick event
+        // Open phone scene on click
+        phoneIcon.on('pointerdown', () => this.scene.start('Phone', { location : './src/assets/training-room.png' , prevScene : 'Training'})); // pointerdown = onClick event
         
         // Add the "train here" button
         const trainButton = this.add.image(418, 227.5, 'trainButton');
@@ -41,38 +42,9 @@ class TrainingScene extends Phaser.Scene {
             // Disable all other buttons when training tab is on
             phoneIcon.disableInteractive(); 
             trainButton.disableInteractive();
-            this.startTraining();
+            this.scene.start('Test');
         }, this);
-
-
     }
-
-    openPhone () {
-        this.scene.start('Phone', { location : './src/assets/training-room.png' , prevScene : 'Training'});
-    }
-
-    startTraining () {
-        const testBG = this.add.image(this.sys.game.config.width/2, this.sys.game.config.height/2, 'transparentBox');
-        testBG.setScale(.75);
-
-        // Welcome scene
-        this.add.text(100, 160, 'Welcome to the GDPR training station! Please choose an option below:', { fontFamily: 'Myriad Pro', fontSize: '38px', color: '#4D4D4D'})
-        const learnButton = this.add.image(300, 300, 'greyTrainButton');
-        this.add.text(205, 285, 'LEARN ABOUT GDPR', { fontFamily: 'Myriad Pro', fontSize: '30px', color: '#ffffff'});
-        learnButton.setScale(.75);
-
-        const testButton = this.add.image(720, 300, 'greyTrainButton');
-        this.add.text(610, 285, 'TEST YOUR KNOWLEDGE', { fontFamily: 'Myriad Pro', fontSize: '30px', color: '#ffffff'});
-        testButton.setScale(.75);
-        testButton.setInteractive({ useHandCursor: true });
-        testButton.on('pointerdown', () => this.scene.start('Test'));
-
-        // Closing the training tab simply restarts the scene to its initial state
-        const closeTrainingButton = this.add.image(50, 50, 'closeTraining');
-        closeTrainingButton.setInteractive({ useHandCursor: true }); 
-        closeTrainingButton.on('pointerdown', () => this.scene.restart()); 
-    }
-    
 }
 
 export default TrainingScene;

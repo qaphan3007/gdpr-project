@@ -33,7 +33,7 @@ class PhoneScene extends Phaser.Scene {
 		bg.displayHeight = config.height;
 		bg.scaleX = bg.scaleY;*/
 		//this.cameras.main.backgroundColor = Phaser.Display.Color.HexStringToColor("#ffff00");
-		this.cameras.main.setBackgroundColor('#A9A9A9')
+		this.cameras.main.setBackgroundColor('#A9A9A9');
 
 
 		// Add phone screen and place it in the middle of the scene
