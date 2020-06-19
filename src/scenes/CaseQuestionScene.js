@@ -45,7 +45,7 @@ class CaseQuestionScene extends Phaser.Scene {
     async displayQuestions () {
         const questions = await this.loadQuestionsFromDB('1')
             .then((questions) => { return questions });
-        this.startDisplay(0, questions);
+        this.showQuestion(0, questions);
     }
 
     async loadQuestionsFromDB (caseNum) {
@@ -66,7 +66,7 @@ class CaseQuestionScene extends Phaser.Scene {
         });
     }
 
-    startDisplay (questionNum, questions) {
+    showQuestion (questionNum, questions) {
         const question = questions[questionNum]['question'];
         
         const container = this.add.container(70, 70);
@@ -74,11 +74,7 @@ class CaseQuestionScene extends Phaser.Scene {
         container.add(this.add.text(0, 70, question, { fontFamily: 'Myriad Pro', fontSize: '25px', color: '#4D4D4D', align: 'left', wordWrap: { width: 930, useAdvanceWrap: true }}));
         
         const alternatives = Object.values(questions[questionNum]['alts']);
-        this.showAlternatives(alternatives);
-    }
 
-    showAlternatives (alternatives) {
-        const container = this.add.container(70, 70);
         alternatives.forEach((alternative, currentIndex) => {
             const altText = (currentIndex + 1).toString() + ') ' + alternative['alt']
             const alt = this.add.text(20, 100 + (currentIndex + 1) * 40, altText, { fontFamily: 'Myriad Pro', fontSize: '25px', color: '#4D4D4D', align: 'left', wordWrap: { width: 930, useAdvanceWrap: true }});
@@ -88,28 +84,65 @@ class CaseQuestionScene extends Phaser.Scene {
             alt.on('pointerout', () => alt.setColor('#4D4D4D') );
             alt.on('pointerdown', () => {
                 container.destroy();
-                this.showFeedback(alternatives, currentIndex);
+                this.showFeedback(questionNum, questions, currentIndex);
             });
         })
     }
 
-    showFeedback (alternatives, answerIndex) {
+    showFeedback (questionNum, questions, answerIndex) {
+        const question = questions[questionNum]['question'];
+        
         const container = this.add.container(70, 70);
+        container.add(this.add.text(390, 0, 'Question ' + (questionNum + 1).toString(), { fontFamily: 'Myriad Pro Bold', fontSize: '38px', color: '#4D4D4D'}));
+        container.add(this.add.text(0, 70, question, { fontFamily: 'Myriad Pro', fontSize: '25px', color: '#4D4D4D', align: 'left', wordWrap: { width: 930, useAdvanceWrap: true }}));
+        
+        const alternatives = Object.values(questions[questionNum]['alts']);
+
+        // Show the alternatives with correct answer marked with colors, chosen answer has bold font
         alternatives.forEach((alternative, currentIndex) => {
             const altText = (currentIndex + 1).toString() + ') ' + alternative['alt']
-            const correctColor = '#32CD32';
-            const incorrectColor = '#DC143C';
+            const correctColor = '#32CD32'; // Green
+            const incorrectColor = '#DC143C'; // Red
             const altColor = alternative['correct'] ? correctColor : incorrectColor;
             const altFont = currentIndex == answerIndex ? 'Myriad Pro Bold' : 'Myriad Pro';
             const alt = this.add.text(20, 100 + (currentIndex + 1) * 40, altText, { fontFamily: altFont, fontSize: '25px', color: altColor, align: 'left', wordWrap: { width: 870, useAdvanceWrap: true }});
             container.add(alt);
         })
         
+        // Show the feedback of the current answer
         const feedbackText = 'Feedback on your answer:';
         var feedbackYPosition = 130 + (alternatives.length + 1) * 40;
         container.add(this.add.text(0, feedbackYPosition, feedbackText, { fontFamily: 'Myriad Pro', fontSize: '25px', color: '#4D4D4D', align: 'left', wordWrap: { width: 870, useAdvanceWrap: true }}));
         container.add(this.add.text(20, feedbackYPosition + 40, alternatives[answerIndex]['feedback'], { fontFamily: 'Myriad Pro', fontSize: '25px', color: '#4D4D4D', align: 'left', wordWrap: { width: 870, useAdvanceWrap: true }}));
 
+        // Press on the button to go to the next question
+        if (questionNum < questions.length - 1) {
+            const nextButton = this.add.image(795, 10, 'greyTrainButton');
+            container.add(nextButton);
+            container.add(this.add.text(740, 0, 'NEXT QUESTION', { fontFamily: 'Myriad Pro', fontSize: '25px', color: '#ffffff'}));
+            nextButton.setScale(.6);
+            nextButton.setInteractive({ useHandCursor: true });
+            nextButton.on('pointerdown', function () { 
+                container.destroy();
+                this.showQuestion(questionNum + 1, questions);
+            }, this);            
+        } else {
+            // Finish the case if there are no more questions
+            const finishButton = this.add.image(795, 10, 'greyTrainButton');
+            container.add(finishButton);
+            container.add(this.add.text(745, 0, 'FINISH CASE', { fontFamily: 'Myriad Pro', fontSize: '25px', color: '#ffffff'}));
+            finishButton.setScale(.6);
+            finishButton.setInteractive({ useHandCursor: true });
+            finishButton.on('pointerdown', function () { 
+                container.destroy();
+                this.finishSolvingCase();
+                this.scene.start('Meeting');
+            }, this);     
+        }
+    }
+     
+    finishSolvingCase () {
+        // Add achievement etc.
     }
 }
 
