@@ -117,7 +117,7 @@ class MeetingOptionsScene extends Phaser.Scene {
             // Finish reading the case and start with the questions
             const completeButton = this.add.image(750, 430, 'greyTrainButton');
             container.add(completeButton);
-            container.add(this.add.text(710, 415, 'TO QUESTIONS', { fontFamily: 'Myriad Pro', fontSize: '30px', color: '#ffffff'}));
+            container.add(this.add.text(690, 415, 'TO QUESTIONS', { fontFamily: 'Myriad Pro', fontSize: '30px', color: '#ffffff'}));
             completeButton.setScale(.75);
             completeButton.setInteractive({ useHandCursor: true });
             completeButton.on('pointerdown', function () { 

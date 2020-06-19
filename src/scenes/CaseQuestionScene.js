@@ -17,6 +17,7 @@ class CaseQuestionScene extends Phaser.Scene {
 
     create () {
         this.setBackground();
+        this.displayQuestions();
     }
 
     setBackground () {
@@ -41,6 +42,75 @@ class CaseQuestionScene extends Phaser.Scene {
         closeMeetingButton.on('pointerdown', () => this.scene.start('Meeting')); 
     }
 
+    async displayQuestions () {
+        const questions = await this.loadQuestionsFromDB('1')
+            .then((questions) => { return questions });
+        this.startDisplay(0, questions);
+    }
+
+    async loadQuestionsFromDB (caseNum) {
+        var questionArray = [];
+        return new Promise((resolve, reject) => {
+            this.sys.game.db.collection('scenarios').doc(caseNum).collection('questions')
+            .get()
+            .then(function(querySnapshot) {
+                querySnapshot.forEach(function(doc) {
+                    questionArray[doc.id - 1] = doc.data();
+                });
+                return resolve(questionArray);
+            })
+            .catch(function(error) {
+                console.log("Error getting documents: ", error);
+                return reject(error);
+            });
+        });
+    }
+
+    startDisplay (questionNum, questions) {
+        const question = questions[questionNum]['question'];
+        
+        const container = this.add.container(70, 70);
+        container.add(this.add.text(390, 0, 'Question ' + (questionNum + 1).toString(), { fontFamily: 'Myriad Pro Bold', fontSize: '38px', color: '#4D4D4D'}));
+        container.add(this.add.text(0, 70, question, { fontFamily: 'Myriad Pro', fontSize: '25px', color: '#4D4D4D', align: 'left', wordWrap: { width: 930, useAdvanceWrap: true }}));
+        
+        const alternatives = Object.values(questions[questionNum]['alts']);
+        this.showAlternatives(alternatives);
+    }
+
+    showAlternatives (alternatives) {
+        const container = this.add.container(70, 70);
+        alternatives.forEach((alternative, currentIndex) => {
+            const altText = (currentIndex + 1).toString() + ') ' + alternative['alt']
+            const alt = this.add.text(20, 100 + (currentIndex + 1) * 40, altText, { fontFamily: 'Myriad Pro', fontSize: '25px', color: '#4D4D4D', align: 'left', wordWrap: { width: 930, useAdvanceWrap: true }});
+            container.add(alt);
+            alt.setInteractive({ useHandCursor: true });
+            alt.on('pointerover', () => alt.setColor('#B3B3B3') );  // Change text color on hover
+            alt.on('pointerout', () => alt.setColor('#4D4D4D') );
+            alt.on('pointerdown', () => {
+                container.destroy();
+                this.showFeedback(alternatives, currentIndex);
+            });
+        })
+    }
+
+    showFeedback (alternatives, answerIndex) {
+        const container = this.add.container(70, 70);
+        alternatives.forEach((alternative, currentIndex) => {
+            const altText = (currentIndex + 1).toString() + ') ' + alternative['alt']
+            const correctColor = '#32CD32';
+            const incorrectColor = '#DC143C';
+            const altColor = alternative['correct'] ? correctColor : incorrectColor;
+            const altFont = currentIndex == answerIndex ? 'Myriad Pro Bold' : 'Myriad Pro';
+            const alt = this.add.text(20, 100 + (currentIndex + 1) * 40, altText, { fontFamily: altFont, fontSize: '25px', color: altColor, align: 'left', wordWrap: { width: 870, useAdvanceWrap: true }});
+            container.add(alt);
+        })
+        
+        const feedbackText = 'Feedback on your answer:';
+        var feedbackYPosition = 130 + (alternatives.length + 1) * 40;
+        container.add(this.add.text(0, feedbackYPosition, feedbackText, { fontFamily: 'Myriad Pro', fontSize: '25px', color: '#4D4D4D', align: 'left', wordWrap: { width: 870, useAdvanceWrap: true }}));
+        container.add(this.add.text(20, feedbackYPosition + 40, alternatives[answerIndex]['feedback'], { fontFamily: 'Myriad Pro', fontSize: '25px', color: '#4D4D4D', align: 'left', wordWrap: { width: 870, useAdvanceWrap: true }}));
+
+    }
 }
 
 export default CaseQuestionScene;
