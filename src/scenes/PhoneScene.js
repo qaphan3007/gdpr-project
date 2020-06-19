@@ -21,7 +21,7 @@ class PhoneScene extends Phaser.Scene {
 		this.load.image('mapScreen', './src/assets/map-screen.png');
 		this.load.image('receptionIcon', './src/assets/reception-icon.png'); // Phone icons
 		this.load.image('trainingRoomIcon', './src/assets/training-room-icon.png');
-
+		this.load.image('meetingRoomIcon', './src/assets/meeting-room-icon.png');
 	}
 
 	create () {
@@ -82,6 +82,15 @@ class PhoneScene extends Phaser.Scene {
 			trainingRoomIcon.on('pointerdown', () => this.closePhone());
 		} else {
 			trainingRoomIcon.on('pointerdown', () => this.scene.start('Training'));
+		}
+
+		const meetingRoomIcon = this.add.image(589, 373, 'meetingRoomIcon');
+		meetingRoomIcon.setScale(0.078);
+		meetingRoomIcon.setInteractive({ useHandCursor: true });
+		if (this.prevScene == 'Meeting') {
+			meetingRoomIcon.on('pointerdown', () => this.closePhone());
+		} else {
+			meetingRoomIcon.on('pointerdown', () => this.scene.start('Meeting'));
 		}
 	}
 

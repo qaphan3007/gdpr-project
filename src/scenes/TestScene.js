@@ -47,6 +47,10 @@ class TestScene extends Phaser.Scene {
         container.add(learnButton);
         container.add(this.add.text(205, 285, 'LEARN ABOUT GDPR', { fontFamily: 'Myriad Pro', fontSize: '30px', color: '#ffffff'}));
         learnButton.setScale(.75);
+        learnButton.setInteractive({ useHandCursor: true });  // Cursor style change when hovering 
+        // Open learning scene on click
+        learnButton.on('pointerdown', () => this.scene.start('Learning')); 
+        
 
         const testButton = this.add.image(720, 300, 'greyTrainButton');
         container.add(testButton);

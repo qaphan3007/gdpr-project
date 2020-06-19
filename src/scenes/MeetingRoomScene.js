@@ -1,16 +1,15 @@
 import 'phaser';
 import 'firebase/firestore';
 
-class TrainingScene extends Phaser.Scene {
+class MeetingRoomScene extends Phaser.Scene {
     constructor() {
-        super('Training') 
+        super('Meeting') 
     }
 
     preload () {
-        this.load.image('trainingRoom', './src/assets/training-room.png');
+        this.load.image('meetingRoom', './src/assets/meeting-room-icon.png');
         this.load.image('transparentBox', './src/assets/transparent-rect.png');
         this.load.image('closeTraining', './src/assets/close-button.png');
-        this.load.image('trainButton', './src/assets/train-button.png');
         this.load.image('greyTrainButton', './src/assets/grey-train-button.png');
         this.load.image('phoneIcon', './src/assets/phone-icon.png');
         this.load.image('phoneScreen', './src/assets/phone-screen.png');
@@ -18,7 +17,7 @@ class TrainingScene extends Phaser.Scene {
 
     create () {
         const config = this.sys.game.config;
-        const bg = this.add.image(0, 0, 'trainingRoom');
+        const bg = this.add.image(0, 0, 'meetingRoom');
         
         // Scale the background img to fit the height of the game height
         bg.displayHeight = config.height;
@@ -32,19 +31,11 @@ class TrainingScene extends Phaser.Scene {
         phoneIcon.setScale(.7);
         phoneIcon.setInteractive({ useHandCursor: true });  // Cursor style change when hovering 
         // Open phone scene on click
-        phoneIcon.on('pointerdown', () => this.scene.start('Phone', { location : './src/assets/training-room.png' , prevScene : 'Training'})); // pointerdown = onClick event
-        
-        // Add the "train here" button
-        const trainButton = this.add.image(418, 227.5, 'trainButton');
-        trainButton.setScale(.75);
-        trainButton.setInteractive({ useHandCursor: true }); 
-        trainButton.on('pointerdown', function () { 
-            // Disable all other buttons when training tab is on
-            phoneIcon.disableInteractive(); 
-            trainButton.disableInteractive();
-            this.scene.start('TrainingOptions');
-        }, this);
+        phoneIcon.on('pointerdown', () => this.scene.start('Phone', { location : './src/assets/meeting-room.png' , prevScene : 'Meeting'})); // pointerdown = onClick event
+
+        const caseButton = this.add.text(515, 175, 'PRESS HERE TO START', { fontFamily: 'Myriad Pro', fontSize: '25px', color: '#ffffff'}).setPadding(64, 16).setBackgroundColor('#442E55').setInteractive({ useHandCursor: true });
+        caseButton.on('pointerdown', () => this.scene.start('MeetingOptions'));
     }
 }
 
-export default TrainingScene;
+export default MeetingRoomScene;
