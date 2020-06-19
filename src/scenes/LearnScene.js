@@ -20,8 +20,8 @@ class LearnScene extends Phaser.Scene {
     create () {      
         this.setBackground();
         this.displayLearningContent();
-        
     }
+
     setBackground () {
         const config = this.sys.game.config;
         const bg = this.add.image(0, 0, 'trainingRoom');
@@ -72,9 +72,8 @@ class LearnScene extends Phaser.Scene {
     startLearning (index, content) {
         const topic = content[index]['topic'];
         const description = content[index]['description'];
-        // Test information page / choosing difficulty
+        
         const container = this.add.container(70, 70);
-
         container.add(this.add.text(390, 0, topic, { fontFamily: 'Myriad Pro Bold', fontSize: '38px', color: '#4D4D4D'}));
         container.add(this.add.text(0, 70, description, { fontFamily: 'Myriad Pro', fontSize: '25px', color: '#4D4D4D', align: 'left', wordWrap: { width: 930, useAdvanceWrap: true }}));
         
