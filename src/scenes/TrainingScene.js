@@ -42,7 +42,7 @@ class TrainingScene extends Phaser.Scene {
             // Disable all other buttons when training tab is on
             phoneIcon.disableInteractive(); 
             trainButton.disableInteractive();
-            this.scene.start('Test');
+            this.scene.start('TrainingOptions');
         }, this);
     }
 }
