@@ -54,12 +54,7 @@ class TrainingOptionsScene extends Phaser.Scene {
         container.add(this.add.text(610, 285, 'TEST YOUR KNOWLEDGE', { fontFamily: 'Myriad Pro', fontSize: '30px', color: '#ffffff'}));
         testButton.setScale(.75);
         testButton.setInteractive({ useHandCursor: true });
-        testButton.on('pointerdown', function () {
-            container.destroy();
-            this.scene.start('Test')
-        }, this); 
-
-        
+        testButton.on('pointerdown', () => this.scene.start('Test')); 
     }
 }
 export default TrainingOptionsScene;
