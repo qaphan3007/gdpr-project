@@ -5,14 +5,10 @@ class ReceptionScene extends Phaser.Scene {
         super('Reception') // this scene has the key 'Reception' when initializing it
     }
  
+
     init () {
-        this.player = {
-            role: "",
-            level: 0,
-            achievements : [],
-            objectives: [],
-            hasChosenRole: false
-        }
+        this.player = this.sys.game.player;
+        this.db = this.sys.game.db;
     }
     
     preload () {
@@ -76,8 +72,8 @@ class ReceptionScene extends Phaser.Scene {
             testBG.destroy();
             closeMeetingButton.destroy();
             this.player['role'] = 'learner';
+            this.player['objectives'][0] = 0;
             this.addPlayerToDB(this.player);
-            this.hasChosenRole = true;
         }, this);  
 
         const trainerButton = this.add.image(680, 400, 'greyTrainButton');
@@ -90,13 +86,13 @@ class ReceptionScene extends Phaser.Scene {
             testBG.destroy();
             closeMeetingButton.destroy();
             this.player['role'] = 'trainer';
+            this.player['objectives'][0] = 0;
             this.addPlayerToDB(this.player);
-            this.hasChosenRole = true;
         }, this);  
     }
 
     addPlayerToDB (newPlayer) {
-        this.sys.game.db.collection("players").add(newPlayer)
+        this.db.collection("players").add(newPlayer)
             .then(function() {})
             .catch(function(error) {
                 console.error("Error writing document: ", error);

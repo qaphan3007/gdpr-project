@@ -38,7 +38,22 @@ class Game extends Phaser.Game {
 		// Access this variable through this.sys.game.db
 		this.db = firebaseApp.firestore();
 
-		this.player = {};
+		/* 
+			Player object:
+			1. Role: either "learner" or "trainer"
+			2. Level: advance in level by completing training 
+			3. Achievements: a list of achievements, correspond to the achiement ID in the database
+			4. Objectives: complete objectives to unlock more rooms
+				Objective 0: choose a role, unlock training room
+				Objective 1: finish one level of learning and testing, unlock meeting room
+				Objective 2: finish solving one case
+		*/
+		this.player = {
+            role: "",
+            level: 0,
+            achievements : [],
+            objectives: [],
+        }
 	}
 }
 
