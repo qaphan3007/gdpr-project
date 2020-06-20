@@ -5,6 +5,7 @@ import firebase from 'firebase/app';
 import 'firebase/firestore';
 import 'regenerator-runtime/runtime'
 import ReceptionScene from './scenes/ReceptionScene';
+import ReceptionRoleScene from './scenes/ReceptionRoleScene';
 import PhoneScene from './scenes/PhoneScene';
 import TrainingScene from './scenes/TrainingScene';
 import TrainingOptionsScene from './scenes/TrainingOptionsScene';
@@ -19,6 +20,7 @@ class Game extends Phaser.Game {
 		super(config); // This Game object has config loaded from config.js
 		// Load all scenes		
 		this.scene.add('Reception', ReceptionScene);
+		this.scene.add('ReceptionRole', ReceptionRoleScene);
 		this.scene.add('Phone', PhoneScene);
 		this.scene.add('Training', TrainingScene);
 		this.scene.add('TrainingOptions', TrainingOptionsScene);
