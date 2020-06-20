@@ -12,6 +12,10 @@ class ReceptionScene extends Phaser.Scene {
     }
 
     create () {
+        this.createBackground();
+    }
+
+    createBackground () {
         const config = this.sys.game.config;
         const bg = this.add.image(0, 0, 'reception');
         
@@ -27,7 +31,12 @@ class ReceptionScene extends Phaser.Scene {
         phoneIcon.setScale(.7);
         phoneIcon.setInteractive({ useHandCursor: true });  // Cursor style change when hovering 
         phoneIcon.on('pointerdown', () => this.openPhone()); // pointerdown = onClick event
-        
+
+        const caseButton = this.add.text(515, 175, 'PRESS HERE TO START', { fontFamily: 'Myriad Pro', fontSize: '25px', color: '#ffffff'}).setPadding(64, 16).setBackgroundColor('#442E55').setInteractive({ useHandCursor: true });
+        caseButton.on('pointerdown', () => {
+            caseButton.destroy();
+            this.createIntroScreen();
+        });   
     }
 
     openPhone () {
