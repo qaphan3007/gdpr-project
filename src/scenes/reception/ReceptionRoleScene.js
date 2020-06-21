@@ -2,7 +2,7 @@ import 'phaser';
 
 class ReceptionRoleScene extends Phaser.Scene {
     constructor() {
-        super('ReceptionRole') // this scene has the key 'Reception' when initializing it
+        super('ReceptionRole') 
     }
 
     init () {
@@ -60,8 +60,9 @@ class ReceptionRoleScene extends Phaser.Scene {
         learnerButton.setScale(.6);
         learnerButton.setInteractive({ useHandCursor: true });
         learnerButton.on('pointerdown', function () { 
+            console.log(this.player)
             this.player['role'] = 'learner';
-            this.player['objectives'][0] = 1;
+            this.player['objective'] = 2;
             this.addPlayerToDB(this.player);
             this.scene.start('Reception');
         }, this);  

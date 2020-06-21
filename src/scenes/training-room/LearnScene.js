@@ -55,7 +55,10 @@ class LearnScene extends Phaser.Scene {
     }
 
     async getLearningContentFromDB() {
-        // Get all docs in the given level and add it into an array.
+        /* 
+            Get all learning content that corresponds to the current level of the player
+            and add it into an array.
+         */
         const level = this.player['level'].toString();
         var contentArray = [];
         return new Promise((resolve, reject) => {
@@ -68,7 +71,6 @@ class LearnScene extends Phaser.Scene {
                 return resolve(contentArray);
             })
             .catch(function(error) {
-                console.log("Error getting documents: ", error);
                 return reject(error);
             });
         });
