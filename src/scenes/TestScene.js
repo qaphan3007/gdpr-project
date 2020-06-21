@@ -4,6 +4,10 @@ class TestScene extends Phaser.Scene {
     constructor() {
         super('Test') // this scene has the key 'Test' when initializing it
     }
+
+    init () {
+        this.currentAnswer = [];
+    }
  
     preload () {
         this.load.image('trainingRoom', './src/assets/training-room.png');
@@ -39,29 +43,7 @@ class TestScene extends Phaser.Scene {
         closeTrainingButton.setInteractive({ useHandCursor: true }); 
         closeTrainingButton.on('pointerdown', () => this.scene.start('Training')); 
 
-        // Welcome page
-        const container = this.add.container(0, 0);
-
-        container.add(this.add.text(100, 160, 'Welcome to the GDPR training station! Please choose an option below:', { fontFamily: 'Myriad Pro', fontSize: '38px', color: '#4D4D4D'}));
-        const learnButton = this.add.image(300, 300, 'greyTrainButton');
-        container.add(learnButton);
-        container.add(this.add.text(205, 285, 'LEARN ABOUT GDPR', { fontFamily: 'Myriad Pro', fontSize: '30px', color: '#ffffff'}));
-        learnButton.setScale(.75);
-        learnButton.setInteractive({ useHandCursor: true });  // Cursor style change when hovering 
-        // Open learning scene on click
-        learnButton.on('pointerdown', () => this.scene.start('Learning')); 
-        
-
-        const testButton = this.add.image(720, 300, 'greyTrainButton');
-        container.add(testButton);
-        container.add(this.add.text(610, 285, 'TEST YOUR KNOWLEDGE', { fontFamily: 'Myriad Pro', fontSize: '30px', color: '#ffffff'}));
-        testButton.setScale(.75);
-        testButton.setInteractive({ useHandCursor: true });
-        testButton.on('pointerdown', function () {
-            // Delete all children of the container and make a new one
-            container.destroy();
-            this.startTest();
-        }, this); 
+        this.startTest();
     }
 
     startTest () {
@@ -71,7 +53,7 @@ class TestScene extends Phaser.Scene {
         container.add(this.add.text(290, 0, 'TEST YOUR KNOWLEDGE', { fontFamily: 'Myriad Pro Bold', fontSize: '38px', color: '#4D4D4D'}));
         container.add(this.add.text(0, 70, 'This test aims to test the knowledge you gained in the learning section of this level.', { fontFamily: 'Myriad Pro', fontSize: '25px', color: '#4D4D4D'}));
         container.add(this.add.text(0, 105, 'There are 2 different difficulty levels to choose from. In easy mode, there will be no timer. In hard mode, the timer starts', { fontFamily: 'Myriad Pro', fontSize: '25px', color: '#4D4D4D'}));
-        container.add(this.add.text(0, 140, 'at 60 seconds for each question, decreasing with 3 seconds after each question.', { fontFamily: 'Myriad Pro', fontSize: '25px', color: '#4D4D4D'}));
+        container.add(this.add.text(0, 140, 'at 60 seconds for each question.', { fontFamily: 'Myriad Pro', fontSize: '25px', color: '#4D4D4D'}));
         container.add(this.add.text(0, 195, 'To begin the test, please choose a difficulty level:', { fontFamily: 'Myriad Pro', fontSize: '25px', color: '#4D4D4D'}));
 
         const easy = this.add.image(230, 330, 'greyTrainButton');
@@ -81,7 +63,8 @@ class TestScene extends Phaser.Scene {
         easy.setInteractive(({ useHandCursor: true }));
         easy.on('pointerdown', function () { 
             container.destroy();
-            this.startHardMode();
+            this.difficulty = 'Easy'
+            this.chooseDifficulty(this.difficulty);
         }, this);
 
         const hard = this.add.image(650, 330, 'greyTrainButton');
@@ -91,18 +74,27 @@ class TestScene extends Phaser.Scene {
         hard.setInteractive({ useHandCursor: true });
         hard.on('pointerdown', function () { 
             container.destroy();
-            this.startHardMode();
+            this.difficulty = 'Hard'
+            this.chooseDifficulty(this.difficulty);
         }, this);
     }
 
-    startHardMode () {
-        // Timer later
-        const container = this.add.container(0, 0);
+    chooseDifficulty (difficulty) {
+        // Timer if hard mode, else no timer
+        if (difficulty == 'Hard') {
+            this.currentTimer = 60;
+            this.timerCircle = this.add.circle(631, 53, 30, 0xBCBCBC);
+            this.displayTime = this.add.text(620, 35, this.currentTimer,  { fontFamily: 'Myriad Pro', fontSize: '30px', color: '#FFFFFF'} );
 
-        container.add(this.add.text(100, 32, 'LEVEL 1', { fontFamily: 'Myriad Pro Bold', fontSize: '38px', color: '#4D4D4D'} ));
-        container.add(this.add.text(430, 31, 'Question 1', { fontFamily: 'Myriad Pro Bold', fontSize: '38px', color: '#4D4D4D'} ));
+            // Each 1000 ms call countdown and set text to -1
+            this.timedEvent = this.time.addEvent({ delay: 1000, callback: this.countdown, callbackScope: this, loop: true });
+        }
+        this.container = this.add.container(0, 0);
 
-        container.add(this.add.text(100, 100, 'Match the term and definition:', { fontFamily: 'Myriad Pro', fontSize: '30px', color: '#4D4D4D'} ));
+        this.container.add(this.add.text(100, 32, 'LEVEL 1', { fontFamily: 'Myriad Pro Bold', fontSize: '38px', color: '#4D4D4D'} ));
+        this.container.add(this.add.text(430, 31, 'Question 1', { fontFamily: 'Myriad Pro Bold', fontSize: '38px', color: '#4D4D4D'} ));
+
+        this.container.add(this.add.text(100, 100, 'Match the term and definition:', { fontFamily: 'Myriad Pro', fontSize: '30px', color: '#4D4D4D'} ));
 
         var textStyle = {
             fontSize: '18px',
@@ -112,79 +104,150 @@ class TestScene extends Phaser.Scene {
             wordWrap: { width: 330, useAdvancedWrap: true }
         };
 
-        container.add(this.add.ellipse(490, 350, 200, 100, 0x4D4D4D));
-        container.add(this.add.text(430, 330, 'Personal data', { fontFamily: 'Myriad Pro', fontSize: '30px', color: '#FFFFFF'}));
+        this.container.add(this.add.ellipse(490, 350, 200, 100, 0x4D4D4D));
+        this.container.add(this.add.text(430, 330, 'Personal data', { fontFamily: 'Myriad Pro', fontSize: '30px', color: '#FFFFFF'}));
 
         //  16px padding around all sides. Text with bg color and padding creates a rectangle around it
-        const alt1 = this.add.text(120, 170, 'Any information which is related to an identified or identifiable natural person.', textStyle).setPadding(16).setBackgroundColor('#4DD9FF');
-        container.add(alt1);
+        const alt1 = this.add.text(120, 170, 'Any information which is related to an identified or identifiable natural person.', textStyle).setPadding(16).setBackgroundColor('#B3EEFF');
+        this.container.add(alt1);
         alt1.setInteractive({ useHandCursor: true });
-        alt1.on('pointerover', () => alt1.setBackgroundColor('#B3EEFF')); // Change color of button on hover
-        alt1.on('pointerout', () => alt1.setBackgroundColor('#4DD9FF'));
+        alt1.on('pointerover', () => alt1.setBackgroundColor('#4DD9FF')); // Change color of button on hover
+        alt1.on('pointerout', () => alt1.setBackgroundColor('#B3EEFF'));
         alt1.on('pointerdown', function () {
-            container.destroy();
+            this.currentAnswer[0] = alt1.text;
+            this.container.destroy();
             this.nextQuestion();
         }, this);
 
-        const alt2 = this.add.text(560, 200, 'A natural or legal person, public authority, agency or other body which, alone or jointly with others, determines the purposes and means of the processing of personal data.', textStyle).setPadding(16).setBackgroundColor('#33CC33');
-        container.add(alt2);
+        const alt2 = this.add.text(560, 200, 'A natural or legal person, public authority, agency or other body which, alone or jointly with others, determines the purposes and means of the processing of personal data.', textStyle).setPadding(16).setBackgroundColor('#B7EFB7');
+        this.container.add(alt2);
         alt2.setInteractive({ useHandCursor: true });
-        alt2.on('pointerover', () => alt2.setBackgroundColor('#B7EFB7'));
-        alt2.on('pointerout', () => alt2.setBackgroundColor('#33CC33'));
+        alt2.on('pointerover', () => alt2.setBackgroundColor('#33CC33'));
+        alt2.on('pointerout', () => alt2.setBackgroundColor('#B7EFB7'));
         alt2.on('pointerdown', function () {
-            container.destroy();
+            this.currentAnswer[0] = alt2.text;
+            this.container.destroy();
             this.nextQuestion();
         }, this);
 
-        const alt3 = this.add.text(130, 450, 'A natural or legal person, public authority, agency or other body which processes personal data on behalf of the controller.', textStyle).setPadding(16).setBackgroundColor('#FF8000');
-        container.add(alt3);
+        const alt3 = this.add.text(130, 450, 'A natural or legal person, public authority, agency or other body which processes personal data on behalf of the controller.', textStyle).setPadding(16).setBackgroundColor('#FFDAB3');
+        this.container.add(alt3);
         alt3.setInteractive({ useHandCursor: true });
-        alt3.on('pointerover', () => alt3.setBackgroundColor('#FFDAB3'));
-        alt3.on('pointerout', () => alt3.setBackgroundColor('#FF8000'));
+        alt3.on('pointerover', () => alt3.setBackgroundColor('#FF8000'));
+        alt3.on('pointerout', () => alt3.setBackgroundColor('#FFDAB3'));
         alt3.on('pointerdown', function () {
-            container.destroy();
+            this.currentAnswer[0] = alt3.text;
+            this.container.destroy();
             this.nextQuestion();
         }, this);
     }
 
     nextQuestion () {
-        const container = this.add.container(0, 0);
+        // Restart timer to 60
+        this.currentTimer = 60;
 
-        container.add(this.add.text(100, 32, 'LEVEL 1', { fontFamily: 'Myriad Pro Bold', fontSize: '38px', color: '#4D4D4D'} ));
-        container.add(this.add.text(430, 31, 'Question 2', { fontFamily: 'Myriad Pro Bold', fontSize: '38px', color: '#4D4D4D'} ));
+        this.container = this.add.container(0, 0);
 
-        container.add(this.add.text(100, 120, 'What is a controller?', { fontFamily: 'Myriad Pro', fontSize: '30px', color: '#4D4D4D'} ));
+        this.container.add(this.add.text(100, 32, 'LEVEL 1', { fontFamily: 'Myriad Pro Bold', fontSize: '38px', color: '#4D4D4D'} ));
+        this.container.add(this.add.text(430, 31, 'Question 2', { fontFamily: 'Myriad Pro Bold', fontSize: '38px', color: '#4D4D4D'} ));
+
+        this.container.add(this.add.text(100, 120, 'What is a controller?', { fontFamily: 'Myriad Pro', fontSize: '30px', color: '#4D4D4D'} ));
 
         var textStyle = {
             fontSize: '25px',
             fontFamily: 'Myriad Pro',
-            color: '#4D4D4D',
+            color: '#B3B3B3',
             align: 'left',
             wordWrap: { width: 800, useAdvancedWrap: true }
         };
 
         const alt1 = this.add.text(100, 180, '- Any operation or set of operations which is performed on personal data or on sets of personal data.', textStyle);
-        container.add(alt1);
+        this.container.add(alt1);
         alt1.setInteractive({ useHandCursor: true });
-        alt1.on('pointerover', () => alt1.setColor('#B3B3B3') );  // Change text color on hover
-        alt1.on('pointerout', () => alt1.setColor('#4D4D4D') );
-        alt1.on('pointerdown', () => this.clearLevel());
+        alt1.on('pointerover', () => alt1.setColor('#4D4D4D') );  // Change text color on hover
+        alt1.on('pointerout', () => alt1.setColor('#B3B3B3') );
+        alt1.on('pointerdown', function () {
+            this.currentAnswer[1] = alt1.text.substr(2);
+            this.container.destroy();
+            this.clearLevel();
+        }, this);
         const alt2 = this.add.text(100, 240, '- A natural or legal person, public authority, agency or other body which, alone or jointly with others, determines the purposes and means of the processing of personal data.', textStyle);
-        container.add(alt2);
+        this.container.add(alt2);
         alt2.setInteractive({ useHandCursor: true });
-        alt2.on('pointerover', () => alt2.setColor('#B3B3B3') );
-        alt2.on('pointerout', () => alt2.setColor('#4D4D4D') );
-        alt2.on('pointerdown', () => this.clearLevel());
+        alt2.on('pointerover', () => alt2.setColor('#4D4D4D') );
+        alt2.on('pointerout', () => alt2.setColor('#B3B3B3') );
+        alt2.on('pointerdown', function () {
+            this.currentAnswer[1] = alt2.text.substr(2);
+            this.container.destroy();
+            this.clearLevel();
+        }, this);
         const alt3 = this.add.text(100, 320, '- A natural or legal person, public authority, agency or other body which processes personal data on behalf of the controller.', textStyle);
-        container.add(alt3);
+        this.container.add(alt3);
         alt3.setInteractive({ useHandCursor: true });
-        alt3.on('pointerover', () => alt3.setColor('#B3B3B3') );
-        alt3.on('pointerout', () => alt3.setColor('#4D4D4D') );
-        alt3.on('pointerdown', () => this.clearLevel());
+        alt3.on('pointerover', () => alt3.setColor('#4D4D4D') );
+        alt3.on('pointerout', () => alt3.setColor('#B3B3B3') );
+        alt3.on('pointerdown', function () {
+            this.currentAnswer[1] = alt3.text.substr(2);
+            this.container.destroy();
+            this.clearLevel();
+        }, this);
     }
 
     clearLevel () {
-        // Level complete. Results ? 
+        // Destroy timer
+        if (this.difficulty == 'Hard') {
+            this.timedEvent.remove();
+            this.timerCircle.destroy();
+            this.displayTime.destroy();
+        }
+
+        // Check if correct answer
+        const correctAnswer = ['Any information which is related to an identified or identifiable natural person.', 'Any operation or set of operations which is performed on personal data or on sets of personal data.']
+        
+        const container = this.add.container(0, 0);
+        container.add(this.add.text(430, 35, 'RESULTS', { fontFamily: 'Myriad Pro Bold', fontSize: '38px', color: '#4D4D4D'} ));
+        container.add(this.add.text(100, 120, 'Question 1:', { fontFamily: 'Myriad Pro', fontSize: '30px', color: '#4D4D4D'} ));
+        
+        if (this.currentAnswer[0] == correctAnswer[0]) {
+            container.add(this.add.text(240, 120, 'Correct', { fontFamily: 'Myriad Pro', fontSize: '30px', color: '#32CD32'} ));
+        } else {
+            container.add(this.add.text(240, 120, 'Incorrect', { fontFamily: 'Myriad Pro', fontSize: '30px', color: '#DC143C'} ));
+        }
+        container.add(this.add.text(100, 180, 'Question 2', { fontFamily: 'Myriad Pro', fontSize: '30px', color: '#4D4D4D'} ));
+        if (this.currentAnswer[1] == correctAnswer[1]) {
+            container.add(this.add.text(240, 180, 'Correct', { fontFamily: 'Myriad Pro', fontSize: '30px', color: '#32CD32'} ));
+        } else {
+            container.add(this.add.text(240, 180, 'Incorrect', { fontFamily: 'Myriad Pro', fontSize: '30px', color: '#DC143C'} ));
+        }
+
+        container.add(this.add.text(120, 380, 'You have finished this level. You can retry, or press next to proceed to the next level.', { fontFamily: 'Myriad Pro', fontSize: '30px', color: '#4D4D4D'} ));
+        
+        const retryButton = this.add.image(300, 500, 'greyTrainButton');
+        container.add(retryButton);
+        container.add(this.add.text(275, 485, 'RETRY', { fontFamily: 'Myriad Pro', fontSize: '30px', color: '#ffffff'}));
+        retryButton.setScale(.75);
+        retryButton.setInteractive({ useHandCursor: true });
+        retryButton.on('pointerdown', function () {
+            container.destroy();
+            this.startTest();
+        }, this);
+
+        const clearButton = this.add.image(720, 500, 'greyTrainButton');
+        container.add(clearButton);
+        container.add(this.add.text(700, 485, 'NEXT', { fontFamily: 'Myriad Pro', fontSize: '30px', color: '#ffffff'}));
+        clearButton.setScale(.75);
+        clearButton.setInteractive({ useHandCursor: true });
+        clearButton.on('pointerdown', () => this.scene.start('Reception'));
+    }
+
+    countdown () {
+        if (this.currentTimer == 0) {
+            this.container.destroy();
+            this.clearLevel();
+        } else {
+            this.currentTimer -= 1; // One second
+            this.displayTime.setText(this.currentTimer);
+        }
     }
 }
 
