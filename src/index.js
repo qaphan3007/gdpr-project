@@ -4,16 +4,16 @@ import firebaseConfig from './config/firebaseConfig';
 import firebase from 'firebase/app';
 import 'firebase/firestore';
 import 'regenerator-runtime/runtime'
-import ReceptionScene from './scenes/ReceptionScene';
-import ReceptionRoleScene from './scenes/ReceptionRoleScene';
+import ReceptionScene from './scenes/reception/ReceptionScene';
+import ReceptionRoleScene from './scenes/reception/ReceptionRoleScene';
 import PhoneScene from './scenes/PhoneScene';
-import TrainingScene from './scenes/TrainingScene';
-import TrainingOptionsScene from './scenes/TrainingOptionsScene';
+import TrainingScene from './scenes/training-room/TrainingScene';
+import TrainingOptionsScene from './scenes/training-room/TrainingOptionsScene';
 import TestScene from './scenes/TestScene';
-import LearnScene from './scenes/LearnScene';
-import MeetingRoomScene from './scenes/MeetingRoomScene';
-import CaseDescriptionScene from './scenes/CaseDescriptionScene';
-import CaseQuestionScene from './scenes/CaseQuestionScene';
+import LearnScene from './scenes/training-room/LearnScene';
+import MeetingRoomScene from './scenes/meeting-room/MeetingRoomScene';
+import CaseDescriptionScene from './scenes/meeting-room/CaseDescriptionScene';
+import CaseQuestionScene from './scenes/meeting-room/CaseQuestionScene';
 
 class Game extends Phaser.Game {
 	constructor () {
@@ -45,14 +45,18 @@ class Game extends Phaser.Game {
 			1. Role: either "learner" or "trainer"
 			2. Level: advance in level by completing training 
 			3. Achievements: a list of achievements, correspond to the achiement ID in the database
+				Achievement 1: Finish learning one level of GDPR.
+				Achievement 2: Finish testing one level of GDPR.
+				Achievement 3: Finish learning and testing all levels of GDPR.
+				Achievement 4: Finish solving a GDPR case 
 			4. Objectives: complete objectives to unlock more rooms
-				Objective 0: choose a role, unlock training room
-				Objective 1: finish one level of learning and testing, unlock meeting room
-				Objective 2: finish solving one case
+				Objective 1: Choose a role at the reception.
+				Objective 2: Complete one level of learning and testing GDPR knowledge at the training room.
+				Objective 3: Solve one case at the meeting room.
 		*/
 		this.player = {
             role: "",
-            level: 0,
+            level: 1,
             achievements : [],
             objectives: [],
         }
