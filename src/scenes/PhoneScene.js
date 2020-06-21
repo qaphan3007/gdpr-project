@@ -17,7 +17,10 @@ class PhoneScene extends Phaser.Scene {
 		this.load.image('background', this.bgLocation);
 		this.load.image('phoneIcon', './src/assets/phone-icon.png'); // Load image traced from index.html
 		this.load.image('phoneScreen', './src/assets/phone-screen.png');
+		this.load.image('objectiveIcon', './src/assets/objective-icon.png');
 		this.load.image('mapIcon', './src/assets/map-icon.png');
+		this.load.image('achievementIcon', './src/assets/achievement-icon.png');
+		this.load.image('messageIcon', './src/assets/message-icon.png');
 		this.load.image('mapScreen', './src/assets/map-screen.png');
 		this.load.image('receptionIcon', './src/assets/reception-icon.png'); // Phone icons
 		this.load.image('trainingRoomIcon', './src/assets/training-room-icon.png');
@@ -52,10 +55,25 @@ class PhoneScene extends Phaser.Scene {
         phoneIcon.setInteractive({ useHandCursor: true });  // Cursor style change when hovering 
         phoneIcon.on('pointerdown', () => this.closePhone()); // pointerdown = onClick event
 		
+		// Place the objective icon where it is on the phone
+		this.objectiveIcon = this.add.image(445, 180, 'objectiveIcon');
+		this.objectiveIcon.setInteractive({ useHandCursor: true });
+		this.objectiveIcon.on('pointerdown', () => this.openMap()); 
+
 		// Place the map icon where it is on the phone
 		this.mapIcon = this.add.image(504, 180, 'mapIcon');
 		this.mapIcon.setInteractive({ useHandCursor: true });
 		this.mapIcon.on('pointerdown', () => this.openMap()); 
+
+		// Place the achievement icon where it is on the phone
+		this.achievementIcon = this.add.image(562, 180, 'achievementIcon');
+		this.achievementIcon.setInteractive({ useHandCursor: true });
+		this.achievementIcon.on('pointerdown', () => this.openMap()); 
+		
+		// Place the message icon where it is on the phone
+		this.messageIcon = this.add.image(618, 180, 'messageIcon');
+		this.messageIcon.setInteractive({ useHandCursor: true });
+		this.messageIcon.on('pointerdown', () => this.openMap()); 
 	}	
 
 

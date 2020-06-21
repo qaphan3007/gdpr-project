@@ -1,10 +1,14 @@
 import 'phaser';
 import 'firebase/firestore';
-import { LEFT } from 'phaser';
 
 class LearnScene extends Phaser.Scene {
     constructor() {
         super('Learning') 
+    }
+
+    init () {
+        this.player = this.sys.game.player;
+        this.db = this.sys.game.db;
     }
 
     preload () {
@@ -45,16 +49,17 @@ class LearnScene extends Phaser.Scene {
     }
 
     async displayLearningContent () {
-        const levelOne = await this.getLearningContentFromDB('1')
+        const learningContent = await this.getLearningContentFromDB()
             .then((content) => { return content });
-        this.startLearning(0, levelOne);
+        this.startLearning(0, learningContent);
     }
 
-    async getLearningContentFromDB(level) {
+    async getLearningContentFromDB() {
         // Get all docs in the given level and add it into an array.
+        const level = this.player['level'].toString();
         var contentArray = [];
         return new Promise((resolve, reject) => {
-            this.sys.game.db.collection('learning-content').doc('levels').collection(level)
+            this.db.collection('learning-content').doc('levels').collection(level)
             .get()
             .then(function(querySnapshot) {
                 querySnapshot.forEach(function(doc) {
@@ -70,6 +75,8 @@ class LearnScene extends Phaser.Scene {
     }
 
     startLearning (index, content) {
+        const level = this.player['level'];
+
         const topic = content[index]['topic'];
         const description = content[index]['description'];
         
@@ -96,6 +103,11 @@ class LearnScene extends Phaser.Scene {
             completeButton.setInteractive({ useHandCursor: true });
             completeButton.on('pointerdown', function () { 
                 container.destroy();
+                // Player gets an achievment for completing first level
+                if (level == 1) {
+                    console.log('Player gets achievement');
+                    this.player['achievement'].push(1);
+                }
                 this.scene.start('TrainingOptions');
             }, this); 
         }

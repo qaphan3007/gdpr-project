@@ -4,18 +4,18 @@ class ReceptionScene extends Phaser.Scene {
     constructor() {
         super('Reception') // this scene has the key 'Reception' when initializing it
     }
- 
+
+    init() {
+        this.player = this.sys.game.player;
+    }
+
     preload () {
         this.load.image('reception', './src/assets/reception.png' );
         this.load.image('phoneIcon', './src/assets/phone-icon.png');
-        this.load.image('phoneScreen', './src/assets/phone-screen.png' );
+        this.load.image('phoneScreen', './src/assets/phone-screen.png');
     }
 
     create () {
-        this.createBackground();
-    }
-
-    createBackground () {
         const config = this.sys.game.config;
         const bg = this.add.image(0, 0, 'reception');
         
@@ -32,17 +32,19 @@ class ReceptionScene extends Phaser.Scene {
         phoneIcon.setInteractive({ useHandCursor: true });  // Cursor style change when hovering 
         phoneIcon.on('pointerdown', () => this.openPhone()); // pointerdown = onClick event
 
-        const caseButton = this.add.text(515, 175, 'PRESS HERE TO START', { fontFamily: 'Myriad Pro', fontSize: '25px', color: '#ffffff'}).setPadding(64, 16).setBackgroundColor('#442E55').setInteractive({ useHandCursor: true });
-        caseButton.on('pointerdown', () => {
-            caseButton.destroy();
-            this.createIntroScreen();
-        });   
+        // Player can only choose role once
+        if (this.player.role == '') {
+            const caseButton = this.add.text(515, 175, 'PRESS HERE TO START', { fontFamily: 'Myriad Pro', fontSize: '25px', color: '#ffffff'}).setPadding(64, 16).setBackgroundColor('#442E55').setInteractive({ useHandCursor: true });
+            caseButton.on('pointerdown', () => {
+                caseButton.destroy();
+                this.scene.start('ReceptionRole');
+            });   
+        }
     }
 
     openPhone () {
         this.scene.start('Phone', { location : './src/assets/reception.png' , prevScene : 'Reception'});
     }
-    
 }
 
 export default ReceptionScene;
