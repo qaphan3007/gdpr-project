@@ -128,6 +128,14 @@ class CaseQuestionScene extends Phaser.Scene {
             }, this);            
         } else {
             // Finish the case if there are no more questions
+            // Player gets an achievement for solving a case
+            if (! this.player['achievement'].includes(4)) {
+                this.player['achievement'].push(4);
+            }
+
+            // Finish objective 3
+            this.player['objective'] = 4;
+
             const finishButton = this.add.image(795, 10, 'greyTrainButton');
             container.add(finishButton);
             container.add(this.add.text(745, 0, 'FINISH CASE', { fontFamily: 'Myriad Pro', fontSize: '25px', color: '#ffffff'}));

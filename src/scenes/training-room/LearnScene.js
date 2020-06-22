@@ -105,9 +105,8 @@ class LearnScene extends Phaser.Scene {
             completeButton.setInteractive({ useHandCursor: true });
             completeButton.on('pointerdown', function () { 
                 container.destroy();
-                // Player gets an achievment for completing first level
+                // Player gets an achievment for completing learning the first level
                 if (level == 1) {
-                    console.log('Player gets achievement');
                     this.player['achievement'].push(1);
                 }
                 this.scene.start('TrainingOptions');

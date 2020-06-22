@@ -9,7 +9,7 @@ import ReceptionRoleScene from './scenes/reception/ReceptionRoleScene';
 import PhoneScene from './scenes/PhoneScene';
 import TrainingScene from './scenes/training-room/TrainingScene';
 import TrainingOptionsScene from './scenes/training-room/TrainingOptionsScene';
-import TestScene from './scenes/TestScene';
+import TestScene from './scenes/training-room/TestScene';
 import LearnScene from './scenes/training-room/LearnScene';
 import MeetingRoomScene from './scenes/meeting-room/MeetingRoomScene';
 import CaseDescriptionScene from './scenes/meeting-room/CaseDescriptionScene';
@@ -53,6 +53,7 @@ class Game extends Phaser.Game {
 				Objective 1: Choose a role at the reception.
 				Objective 2: Complete one level of learning and testing GDPR knowledge at the training room.
 				Objective 3: Solve one case at the meeting room.
+				Objective 4: Congratulations, you finished all objectives.
 		*/
 		this.player = {
             role: "",

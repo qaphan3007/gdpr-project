@@ -7,6 +7,7 @@ class TestScene extends Phaser.Scene {
 
     init () {
         this.currentAnswer = [];
+        this.player = this.sys.game.player;
     }
  
     preload () {
@@ -220,7 +221,7 @@ class TestScene extends Phaser.Scene {
             container.add(this.add.text(240, 180, 'Incorrect', { fontFamily: 'Myriad Pro', fontSize: '30px', color: '#DC143C'} ));
         }
 
-        container.add(this.add.text(120, 380, 'You have finished this level. You can retry, or press next to proceed to the next level.', { fontFamily: 'Myriad Pro', fontSize: '30px', color: '#4D4D4D'} ));
+        container.add(this.add.text(120, 380, 'You have finished this level. Check your phone to see your achievements!', { fontFamily: 'Myriad Pro', fontSize: '30px', color: '#4D4D4D'} ));
         
         const retryButton = this.add.image(300, 500, 'greyTrainButton');
         container.add(retryButton);
@@ -238,6 +239,12 @@ class TestScene extends Phaser.Scene {
         clearButton.setScale(.75);
         clearButton.setInteractive({ useHandCursor: true });
         clearButton.on('pointerdown', () => this.scene.start('Reception'));
+
+        // Player gets an achievement for completing testing the first level, finish objective 2
+        if (this.player.level == 1) {
+            this.player['achievement'].push(2);
+            this.player['objective'] = 3;
+        }
     }
 
     countdown () {

@@ -60,11 +60,11 @@ class ReceptionRoleScene extends Phaser.Scene {
         learnerButton.setScale(.6);
         learnerButton.setInteractive({ useHandCursor: true });
         learnerButton.on('pointerdown', function () { 
-            console.log(this.player)
             this.player['role'] = 'learner';
             this.player['objective'] = 2;
             this.addPlayerToDB(this.player);
-            this.scene.start('Reception');
+            container.destroy();
+            this.noticeObjectiveComplete();
         }, this);  
 
         const trainerButton = this.add.image(680, 400, 'greyTrainButton');
@@ -79,6 +79,20 @@ class ReceptionRoleScene extends Phaser.Scene {
             .catch(function(error) {
                 console.error("Error writing document: ", error);
             });
+    }
+
+    noticeObjectiveComplete () {
+        const container = this.add.container(70, 70);
+        container.add(this.add.text(70, 150, 'You have finished choosing your role and completed the first objective. Check out the next objective on your phone!', { fontFamily: 'Myriad Pro', fontSize: '30px', color: '#4D4D4D', align: 'center', wordWrap: { width: 800, useAdvanceWrap: true }}));
+        
+        const completeButton = this.add.image(460, 300, 'greyTrainButton');
+        container.add(completeButton);
+        container.add(this.add.text(405, 288, 'CLOSE WINDOW', { fontFamily: 'Myriad Pro', fontSize: '25px', color: '#ffffff'}));
+        completeButton.setScale(.6);
+        completeButton.setInteractive({ useHandCursor: true });
+        completeButton.on('pointerdown', function () { 
+            this.scene.start('Reception')
+        }, this);  
     }
 }
 
