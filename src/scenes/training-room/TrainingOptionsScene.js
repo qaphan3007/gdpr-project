@@ -64,10 +64,10 @@ class TrainingOptionsScene extends Phaser.Scene {
         const levelOneButton = this.add.circle(200, circleYCoord, 30, unlockedLevelColor);
         this.add.text(194, 285, '1', { fontFamily: 'Myriad Pro Bold', fontSize: '30px', color: '#4D4D4D'});
         levelOneButton.setInteractive({ useHandCursor: true }); 
-        levelOneButton.on('pointerdown', () => this.scene.start('Learning')); 
+        levelOneButton.on('pointerdown', () => this.scene.start('Learning', { level: 1 })); 
 
-        // Lock level 2 only if the current level is 1
-        if (this.player['level'] == 1) {
+        // Lock level 2 if the current level is below
+        if (this.player['level'] < 2) {
             this.add.circle(520, circleYCoord, 30, lockedLevelColor);
             this.add.rectangle(360, circleYCoord, 230, 5, lockedLevelColor);
             const lockIcon = this.add.image(520, circleYCoord, 'lockIcon');
@@ -75,30 +75,46 @@ class TrainingOptionsScene extends Phaser.Scene {
         } else {
             const levelTwoButton = this.add.circle(520, circleYCoord, 30, unlockedLevelColor);
             levelTwoButton.setInteractive({ useHandCursor: true }); 
-            levelTwoButton.on('pointerdown', () => this.scene.start('Learning')); 
+            levelTwoButton.on('pointerdown', () => this.scene.start('Learning', { level: 2 })); 
             this.add.rectangle(360, circleYCoord, 230, 5, unlockedLevelColor);
             this.add.text(514, 285, '2', { fontFamily: 'Myriad Pro Bold', fontSize: '30px', color: '#4D4D4D'});
         }
 
-        this.add.circle(840, circleYCoord, 30, lockedLevelColor);
-        this.add.rectangle(680, circleYCoord, 230, 5, lockedLevelColor);
-        const lockIcon = this.add.image(840, circleYCoord, 'lockIcon');
-        lockIcon.setScale(0.05);
+        // Lock level 3 if the current level is below
+        if (this.player['level'] < 3) {
+            this.add.circle(840, circleYCoord, 30, lockedLevelColor);
+            this.add.rectangle(680, circleYCoord, 230, 5, lockedLevelColor);
+            const lockIcon = this.add.image(840, circleYCoord, 'lockIcon');
+            lockIcon.setScale(0.05);
+        } else {
+            const levelThreeButton = this.add.circle(840, circleYCoord, 30, unlockedLevelColor);
+            levelThreeButton.setInteractive({ useHandCursor: true }); 
+            levelThreeButton.on('pointerdown', () => this.scene.start('Learning', { level: 3 })); 
+            this.add.rectangle(680, circleYCoord, 230, 5, unlockedLevelColor);
+            this.add.text(834, 285, '3', { fontFamily: 'Myriad Pro Bold', fontSize: '30px', color: '#4D4D4D'});
+        }
     }
 
     displayTopicByLevel () {
-        const levels = ['1', '2'];
-        levels.forEach(level => {
-            const startXCoord = level == '1' ? 50 : 370;
-            const container = this.add.container(startXCoord, 0);
-            if (Object.keys(this.learningContent).length > 0) {
+        if (Object.keys(this.learningContent).length > 0) {
+            const levels = ['1', '2', '3'];
+            levels.forEach(level => {
+                var startXCoord = 0;
+                if (level == 1) {
+                    startXCoord = 50;
+                } else if (level == 2) {
+                    startXCoord = 370;
+                } else {
+                    startXCoord = 680;
+                }
+                const container = this.add.container(startXCoord, 0);
                 this.hasLoaded = true; 
                 const topicByLevel = this.learningContent[level].map(content => { return content['topic']; })
                 topicByLevel.forEach((topic, id) => {
                     container.add(this.add.text(100, 350 + 25 * id, '* ' + topic, { fontFamily: 'Myriad Pro', fontSize: '22px', color: '#4D4D4D'}));
                 });    
-            } 
-        });
+            });
+        } 
     } 
     
     update () {

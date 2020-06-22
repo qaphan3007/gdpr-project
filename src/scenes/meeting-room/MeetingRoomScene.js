@@ -17,6 +17,8 @@ class MeetingRoomScene extends Phaser.Scene {
         this.load.image('greyTrainButton', './src/assets/grey-train-button.png');
         this.load.image('phoneIcon', './src/assets/phone-icon.png');
         this.load.image('phoneScreen', './src/assets/phone-screen.png');
+        this.load.image('npc', './src/assets/meeting-room-npc.png');
+        this.load.image('framedDialogueBox', './src/assets/framed-dialogue-box.png');
     }
 
     create () {
@@ -30,10 +32,23 @@ class MeetingRoomScene extends Phaser.Scene {
         bg.y = config.height/2;
         bg.x = config.width/2;
 
+        // Add NPC and speech
+        const dialogueBox = this.add.image(700, 200, 'framedDialogueBox');
+        dialogueBox.setScale(1.4);
+        const dialogueText = this.add.text(618, 165, 'Welcome! Press on me to start solving cases.', { fontFamily: 'Myriad Pro', fontSize: '22px', color: '#4D4D4D', align: 'left', wordWrap: { width: 190, useAdvancedWrap: true }})
+        const npc = this.add.image(540, 420, 'npc');
+        npc.setScale(1.4);
+        npc.setInteractive({ useHandCursor: true });  
+        npc.on('pointerdown', () => {
+            dialogueBox.destroy();
+            this.createIntroScreen();
+        });        
+
         // Add the phone button as an image to make it interactive
         const phoneIcon = this.add.image(1000, 530, 'phoneIcon');
         phoneIcon.setScale(.7);
-        phoneIcon.setInteractive({ useHandCursor: true });  // Cursor style change when hovering 
+        phoneIcon.setInteractive({ useHandCursor: true });  
+
         // Open phone scene on click
         phoneIcon.on('pointerdown', () => this.scene.start('Phone', { location : './src/assets/meeting-room.png' , prevScene : 'Meeting'})); // pointerdown = onClick event
 
@@ -41,13 +56,7 @@ class MeetingRoomScene extends Phaser.Scene {
         if (this.player['newAchievement'] || this.player['newObjective']) {
             this.notifCircle = this.add.circle(1015, 505, 10, 0xFD1818);
             this.notifEvent = this.time.addEvent({ delay: 500, callback: () => {this.notifCircle.visible = !this.notifCircle.visible}, callbackScope: this, loop: true });    
-        }
-        
-        const caseButton = this.add.text(515, 175, 'PRESS HERE TO START', { fontFamily: 'Myriad Pro', fontSize: '25px', color: '#ffffff'}).setPadding(64, 16).setBackgroundColor('#442E55').setInteractive({ useHandCursor: true });
-        caseButton.on('pointerdown', () => {
-            caseButton.destroy();
-            this.createIntroScreen();
-        });        
+        }      
     }
 
     createIntroScreen () {

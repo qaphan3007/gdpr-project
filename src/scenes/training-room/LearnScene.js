@@ -6,10 +6,12 @@ class LearnScene extends Phaser.Scene {
         super('Learning') 
     }
 
-    init () {
+    init (data) {
         this.db = this.sys.game.db;
         this.learningContent = this.sys.game.learningContent;
         this.player = this.sys.game.player;
+        this.level = data.level;
+        console.log('Data level ' + this.level)
     }
 
     preload () {
@@ -49,31 +51,9 @@ class LearnScene extends Phaser.Scene {
         closeTrainingButton.on('pointerdown', () => this.scene.start('Training')); 
     }
 
-    async getLearningContentFromDB() {
-        /* 
-            Get all learning content that corresponds to the current level of the player
-            and add it into an array.
-         */
-        const level = this.player['level'].toString();
-        var contentArray = [];
-        return new Promise((resolve, reject) => {
-            this.db.collection('learning-content').doc('levels').collection(level)
-                .get()
-                .then(function(querySnapshot) {
-                    querySnapshot.forEach(function(doc) {
-                        contentArray[doc.id-1] = doc.data();
-                    });
-                    return resolve(contentArray);
-                })
-                .catch(function(error) {
-                    return reject(error);
-                });
-        });
-    }
-
     displayLearningContent (index) {
-        const content = this.learningContent[this.player['level']]
-        const level = this.player['level'];
+        console.log(this.level)
+        const content = this.learningContent[this.level]
 
         const topic = content[index]['topic'];
         const description = content[index]['description'];
@@ -93,7 +73,15 @@ class LearnScene extends Phaser.Scene {
                 this.displayLearningContent(index + 1, content);
             }, this);            
         } else {
-            // Finish learning for this level and go back to start screen of the computer
+            // Finish learning for this level and continue to test
+            var nextScene = '';
+            if (this.level == 1) {
+                nextScene = 'Test';
+            } else if (this.level == 2) {
+                nextScene = 'TestLevel2';
+            } else {
+                nextScene = 'TestLevel3';
+            }
             const completeButton = this.add.image(750, 430, 'greyTrainButton');
             container.add(completeButton);
             container.add(this.add.text(708, 415, 'START TEST', { fontFamily: 'Myriad Pro', fontSize: '30px', color: '#ffffff'}));
@@ -101,7 +89,7 @@ class LearnScene extends Phaser.Scene {
             completeButton.setInteractive({ useHandCursor: true });
             completeButton.on('pointerdown', function () { 
                 container.destroy();
-                this.scene.start('Test');
+                this.scene.start(nextScene);
             }, this); 
         }
         if (index > 0) {

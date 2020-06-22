@@ -218,9 +218,9 @@ class TestScene2 extends Phaser.Scene {
             container.add(this.add.text(240, 180, 'Incorrect', { fontFamily: 'Myriad Pro', fontSize: '30px', color: '#DC143C'} ));
         }
 
-        // If all answers correct, finish demo
+        // If all answers correct, go to next level
         if (correctCount == correctMax) {
-            container.add(this.add.text(120, 380, 'Congratulations! You have completed all the levels for this demo.', { fontFamily: 'Myriad Pro', fontSize: '30px', color: '#4D4D4D'} ));
+            container.add(this.add.text(120, 380, 'You have completed this level!', { fontFamily: 'Myriad Pro', fontSize: '30px', color: '#4D4D4D'} ));
             
             if (this.difficulty == 'Easy' && ! this.player['achievements'].includes(1)) {
                 this.player['achievements'].push(1);
@@ -245,7 +245,7 @@ class TestScene2 extends Phaser.Scene {
 
             const retryButton = this.add.image(500, 500, 'greyTrainButton');
             container.add(retryButton);
-            container.add(this.add.text(400, 485, 'RETRY LEVEL', { fontFamily: 'Myriad Pro', fontSize: '30px', color: '#ffffff'}));
+            container.add(this.add.text(450, 485, 'RETRY LEVEL', { fontFamily: 'Myriad Pro', fontSize: '30px', color: '#ffffff'}));
             retryButton.setScale(.75);
             retryButton.setInteractive({ useHandCursor: true });
             retryButton.on('pointerdown', function () {

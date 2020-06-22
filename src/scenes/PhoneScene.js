@@ -151,12 +151,12 @@ class PhoneScene extends Phaser.Scene {
 		}
 
 		// Conference room is always locked (not implemented)
-		this.lockRoomOnMap(x1, y2);
+		this.lockRoomOnMap(x2, y2);
 
 		// Training room is only unlocked after completing first objective
+		const trainingRoomIcon = this.add.image(x2, y1, 'trainingRoomIcon');
+		trainingRoomIcon.setScale(0.071);
 		if (currentObjective > 1) {
-			const trainingRoomIcon = this.add.image(x2, y1, 'trainingRoomIcon');
-			trainingRoomIcon.setScale(0.071);
 			trainingRoomIcon.setInteractive({ useHandCursor: true });
 			if (this.prevScene == 'Training') {
 				trainingRoomIcon.on('pointerdown', () => this.closePhone());
@@ -168,9 +168,9 @@ class PhoneScene extends Phaser.Scene {
 		}
 
 		// Meeting room is only unlocked after completing second objective
+		const meetingRoomIcon = this.add.image(x1, y2, 'meetingRoomIcon');
+		meetingRoomIcon.setScale(0.078);
 		if (currentObjective > 2) {
-			const meetingRoomIcon = this.add.image(x2, y2, 'meetingRoomIcon');
-			meetingRoomIcon.setScale(0.078);
 			meetingRoomIcon.setInteractive({ useHandCursor: true });
 			if (this.prevScene == 'Meeting') {
 				meetingRoomIcon.on('pointerdown', () => this.closePhone());
@@ -178,7 +178,7 @@ class PhoneScene extends Phaser.Scene {
 				meetingRoomIcon.on('pointerdown', () => this.scene.start('Meeting'));
 			}
 		} else {
-			this.lockRoomOnMap(x2, y2);
+			this.lockRoomOnMap(x1, y2);
 		}
 	}
 
@@ -206,7 +206,6 @@ class PhoneScene extends Phaser.Scene {
 		} else {
 			this.player['achievements'].forEach((achievementIndex) => {
 				counter += 1;
-				console.log(this.achievements[achievementIndex])
 				this.add.text(465, 170 + 60 * counter, this.achievements[achievementIndex], { fontFamily: 'Myriad Pro', fontSize: '20px', color: '#A58348', align: 'left', wordWrap: { width: 170, useAdvanceWrap: true }});
 				this.add.image(440, 190 + 60 * counter, 'achievementTrophy');
 			});

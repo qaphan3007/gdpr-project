@@ -65,13 +65,9 @@ class CaseDescriptionScene extends Phaser.Scene {
             .then(function(doc) {
                 if (doc.exists) {
                     return resolve(doc.data()['description']);
-                } else {
-                    // doc.data() will be undefined in this case
-                    console.log("No such document!");
-                }
+                } 
             })
             .catch(function(error) {
-                console.log("Error getting documents: ", error);
                 return reject(error);
             });
         });

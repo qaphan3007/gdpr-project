@@ -65,7 +65,7 @@ class TrainingScene extends Phaser.Scene {
 
     // Load learning content from DB in this scene to ensure it is loaded before TrainingOptions
     updateLearningContent () {
-        const levels = ['1', '2'];
+        const levels = ['1', '2', '3'];
         if (Object.keys(this.learningContent).length == 0 ) {
             levels.forEach(async (level) => {
                 var contentArray = await this.getLearningContentFromDB(level)
