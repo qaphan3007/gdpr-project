@@ -52,8 +52,7 @@ class PhoneScene extends Phaser.Scene {
 		// Create the home button
 		const homeButton = this.add.circle(530.5, 507, 21, 0xFFFFFF);
 		homeButton.setInteractive({ useHandCursor: true }); 
-		homeButton.on('pointerdown', () => this.returnHome()); 
-
+		homeButton.on('pointerdown', () => this.scene.restart()); 
 		
 		// Resize and place phone icon on bottom right of screen
 		const phoneIcon = this.add.image(1000, 530, 'phoneIcon');
@@ -80,6 +79,15 @@ class PhoneScene extends Phaser.Scene {
 		this.messageIcon = this.add.image(618, 180, 'messageIcon');
 		this.messageIcon.setInteractive({ useHandCursor: true });
 		this.messageIcon.on('pointerdown', () => this.openMessage()); 
+
+		// Place notification circle if there is unseen objective
+		if (this.player['newObjective']) {
+			this.newObjectiveNotif = this.add.circle(463, 159, 7, 0xFD1818);
+		} 
+		if (this.player['newAchievement']) {
+			this.newAchievementNotif = this.add.circle(583, 159, 7, 0xFD1818);
+		}
+
 	}	
 	
 	async getAchievementsFromDB () {
@@ -202,7 +210,10 @@ class PhoneScene extends Phaser.Scene {
 				this.add.image(440, 190 + 60 * counter, 'achievementTrophy');
 			});
 		}
-		this.player['newAchievement'] = false; // Checked achievement no longer gives phone notif
+		if (this.player['newAchievement']){
+			this.player['newAchievement'] = false; // Checked achievement no longer gives phone notif
+			this.newAchievementNotif.visible = false;
+		}
 	}
 
 	async openObjective () {
@@ -220,23 +231,28 @@ class PhoneScene extends Phaser.Scene {
 		this.toggleHomeScreenIcon();
 
         this.add.text(445, 260, currentObjective, { fontFamily: 'Myriad Pro', fontSize: '25px', color: 'white', align: 'center', wordWrap: { width: 175, useAdvanceWrap: true }});
-		this.player['newObjective'] = false;
+		if (this.player['newObjective']) {
+			this.newObjectiveNotif.visible = false;
+			this.player['newObjective'] = false;
+		}
 	}
 
 	openMessage () {
 		this.currentScreen = 'message';
 		this.toggleHomeScreenIcon();
 	}
-
+/*
 	returnHome () {
 		 // Does nothing if clicking home button while on home
 		if (this.currentScreen != 'home') { // Otherwise, toggle buttons
 			this.currentScreen = 'home';
+			this.scene.restart(); 
 			const phoneScreen = this.add.image(this.config.width/2, this.config.height/2, 'phoneScreen');
 			phoneScreen.setScale(.9);
 			this.toggleHomeScreenIcon(); // Enable buttons on home screen again
+			
 		}
-	}
+	}*/
 
 	toggleInteractive (object) {
 		if (object.input.enabled) {

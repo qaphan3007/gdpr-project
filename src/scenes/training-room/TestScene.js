@@ -232,11 +232,18 @@ class TestScene extends Phaser.Scene {
         if (correctCount == correctMax) {
             container.add(this.add.text(120, 400, 'You have completed this level!', { fontFamily: 'Myriad Pro', fontSize: '30px', color: '#4D4D4D'} ));
             
-            // Player gets an achievement for completing testing the first level, finish objective 2
+            // Player gets an achievement for completing testing the first level, finish objective
             if (this.player['level'] == 1) {
-                this.player['achievements'].push(2);
-                this.player['newAchievement'] = true;
+                if (this.difficulty == 'Easy' && ! this.player['achievements'].includes(2)) {
+                    this.player['achievements'].push(1);
+                    this.player['newAchievement'] = true;
+                }
+                else if (this.difficulty == 'Hard' && ! this.player['achievements'].includes(2)) {
+                    this.player['achievements'].push(2);
+                    this.player['newAchievement'] = true;
+                } // Change objective to meeting room after clearing the first test
                 this.player['objective'] = 3;
+                this.player['newObjective'] = true;
             }
             const clearButton = this.add.image(450, 500, 'greyTrainButton');
             container.add(clearButton);

@@ -168,6 +168,8 @@ class CaseQuestionScene extends Phaser.Scene {
         // Player gets an achievement for solving a case and finish objective 3
         this.player['achievements'].push(4);
         this.player['objective'] = 4;
+        this.player['newAchievement'] = true;
+        this.player['newObjective'] = true;
         
         const container = this.add.container(70, 70);
         container.add(this.add.text(70, 150, 'You have finished solving a case and got an achievement. Check out your achievements on your phone! You also finished all objectives and unlocked all rooms. Congratulations!', { fontFamily: 'Myriad Pro', fontSize: '30px', color: '#4D4D4D', align: 'center', wordWrap: { width: 800, useAdvanceWrap: true }}));

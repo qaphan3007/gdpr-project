@@ -8,6 +8,7 @@ class TrainingScene extends Phaser.Scene {
 
     init() {
         this.db = this.sys.game.db;
+        this.player = this.sys.game.player;
         this.learningContent = this.sys.game.learningContent;
     }
     
@@ -44,6 +45,12 @@ class TrainingScene extends Phaser.Scene {
         // Open phone scene on click
         phoneIcon.on('pointerdown', () => this.scene.start('Phone', { location : './src/assets/training-room.png' , prevScene : 'Training'})); // pointerdown = onClick event
         
+        // Make phone notification if there are new achievements or objectives
+        if (this.player['newAchievement'] || this.player['newObjective']) {
+            this.notifCircle = this.add.circle(1015, 505, 10, 0xFD1818);
+            this.notifEvent = this.time.addEvent({ delay: 500, callback: () => {this.notifCircle.visible = !this.notifCircle.visible}, callbackScope: this, loop: true });    
+        }
+
         // Add the "train here" button
         const trainButton = this.add.image(418, 227.5, 'trainButton');
         trainButton.setScale(.75);
