@@ -6,6 +6,10 @@ class CaseQuestionScene extends Phaser.Scene {
         super('CaseQuestion') 
     }
     
+    init () {
+        this.db = this.sys.game.db;
+        this.player = this.sys.game.player;
+    }
     preload () {
         this.load.image('meetingRoom', './src/assets/meeting-room-icon.png');
         this.load.image('transparentBox', './src/assets/transparent-rect.png');
@@ -43,7 +47,8 @@ class CaseQuestionScene extends Phaser.Scene {
     }
 
     async displayQuestions () {
-        const questions = await this.loadQuestionsFromDB('1')
+        const caseNum = this.player['case'].toString();
+        const questions = await this.loadQuestionsFromDB(caseNum)
             .then((questions) => { return questions });
         this.showQuestion(0, questions);
     }
@@ -51,7 +56,7 @@ class CaseQuestionScene extends Phaser.Scene {
     async loadQuestionsFromDB (caseNum) {
         var questionArray = [];
         return new Promise((resolve, reject) => {
-            this.sys.game.db.collection('scenarios').doc(caseNum).collection('questions')
+            this.db.collection('scenarios').doc(caseNum).collection('questions')
             .get()
             .then(function(querySnapshot) {
                 querySnapshot.forEach(function(doc) {
@@ -64,6 +69,20 @@ class CaseQuestionScene extends Phaser.Scene {
                 return reject(error);
             });
         });
+    }
+
+    notifyNoCase () {
+        const container = this.add.container(70, 70);
+        container.add(this.add.text(70, 150, 'You have finished solving all cases. Check back later to see if a trainer has added more cases!', { fontFamily: 'Myriad Pro', fontSize: '30px', color: '#4D4D4D', align: 'center', wordWrap: { width: 800, useAdvanceWrap: true }}));
+        
+        const completeButton = this.add.image(460, 300, 'greyTrainButton');
+        container.add(completeButton);
+        container.add(this.add.text(405, 288, 'CLOSE WINDOW', { fontFamily: 'Myriad Pro', fontSize: '25px', color: '#ffffff'}));
+        completeButton.setScale(.6);
+        completeButton.setInteractive({ useHandCursor: true });
+        completeButton.on('pointerdown', function () { 
+            this.scene.start('Meeting')
+        }, this);  
     }
 
     showQuestion (questionNum, questions) {
@@ -128,14 +147,6 @@ class CaseQuestionScene extends Phaser.Scene {
             }, this);            
         } else {
             // Finish the case if there are no more questions
-            // Player gets an achievement for solving a case
-            if (! this.player['achievement'].includes(4)) {
-                this.player['achievement'].push(4);
-            }
-
-            // Finish objective 3
-            this.player['objective'] = 4;
-
             const finishButton = this.add.image(795, 10, 'greyTrainButton');
             container.add(finishButton);
             container.add(this.add.text(745, 0, 'FINISH CASE', { fontFamily: 'Myriad Pro', fontSize: '25px', color: '#ffffff'}));
@@ -143,14 +154,32 @@ class CaseQuestionScene extends Phaser.Scene {
             finishButton.setInteractive({ useHandCursor: true });
             finishButton.on('pointerdown', function () { 
                 container.destroy();
-                this.finishSolvingCase();
-                this.scene.start('Meeting');
+                this.player['case'] += 1;
+                if (! this.player['achievements'].includes(4)) {
+                    this.finishSolvingFirstCase();
+                } else {
+                    this.scene.start('Meeting');
+                }
             }, this);     
         }
     }
-     
-    finishSolvingCase () {
-        // Add achievement etc.
+    
+    finishSolvingFirstCase () {
+        // Player gets an achievement for solving a case and finish objective 3
+        this.player['achievements'].push(4);
+        this.player['objective'] = 4;
+        
+        const container = this.add.container(70, 70);
+        container.add(this.add.text(70, 150, 'You have finished solving a case and got an achievement. Check out your achievements on your phone! You also finished all objectives and unlocked all rooms. Congratulations!', { fontFamily: 'Myriad Pro', fontSize: '30px', color: '#4D4D4D', align: 'center', wordWrap: { width: 800, useAdvanceWrap: true }}));
+        
+        const completeButton = this.add.image(460, 300, 'greyTrainButton');
+        container.add(completeButton);
+        container.add(this.add.text(405, 288, 'CLOSE WINDOW', { fontFamily: 'Myriad Pro', fontSize: '25px', color: '#ffffff'}));
+        completeButton.setScale(.6);
+        completeButton.setInteractive({ useHandCursor: true });
+        completeButton.on('pointerdown', function () { 
+            this.scene.start('Meeting')
+        }, this);  
     }
 }
 

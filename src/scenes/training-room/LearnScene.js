@@ -105,11 +105,14 @@ class LearnScene extends Phaser.Scene {
             completeButton.setInteractive({ useHandCursor: true });
             completeButton.on('pointerdown', function () { 
                 container.destroy();
-                // Player gets an achievment for completing learning the first level
+                // Player gets an achievement for completing learning the first level
                 if (level == 1) {
-                    this.player['achievement'].push(1);
+                    this.player['achievements'].push(1);
+                    container.destroy();
+                    this.notifyPlayerAchievement();
+                } else {
+                    this.scene.start('TrainingOptions');
                 }
-                this.scene.start('TrainingOptions');
             }, this); 
         }
         if (index > 0) {
@@ -123,7 +126,20 @@ class LearnScene extends Phaser.Scene {
                 this.startLearning(index - 1, content);
             }, this);
         }
+    }
+
+    notifyPlayerAchievement () {
+        const container = this.add.container(70, 70);
+        container.add(this.add.text(70, 150, 'You have finished learning the first level and got an achievement. Check out your achievements on your phone!', { fontFamily: 'Myriad Pro', fontSize: '30px', color: '#4D4D4D', align: 'center', wordWrap: { width: 800, useAdvanceWrap: true }}));
         
+        const completeButton = this.add.image(460, 300, 'greyTrainButton');
+        container.add(completeButton);
+        container.add(this.add.text(405, 288, 'CLOSE WINDOW', { fontFamily: 'Myriad Pro', fontSize: '25px', color: '#ffffff'}));
+        completeButton.setScale(.6);
+        completeButton.setInteractive({ useHandCursor: true });
+        completeButton.on('pointerdown', function () { 
+            this.scene.start('TrainingOptions')
+        }, this);  
     }
 }
 
