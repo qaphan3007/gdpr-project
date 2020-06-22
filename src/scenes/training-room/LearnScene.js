@@ -7,8 +7,9 @@ class LearnScene extends Phaser.Scene {
     }
 
     init () {
-        this.player = this.sys.game.player;
         this.db = this.sys.game.db;
+        this.learningContent = this.sys.game.learningContent;
+        this.player = this.sys.game.player;
     }
 
     preload () {
@@ -23,7 +24,7 @@ class LearnScene extends Phaser.Scene {
 
     create () {      
         this.setBackground();
-        this.displayLearningContent();
+        this.displayLearningContent(0);
     }
 
     setBackground () {
@@ -48,12 +49,6 @@ class LearnScene extends Phaser.Scene {
         closeTrainingButton.on('pointerdown', () => this.scene.start('Training')); 
     }
 
-    async displayLearningContent () {
-        const learningContent = await this.getLearningContentFromDB()
-            .then((content) => { return content });
-        this.startLearning(0, learningContent);
-    }
-
     async getLearningContentFromDB() {
         /* 
             Get all learning content that corresponds to the current level of the player
@@ -63,20 +58,21 @@ class LearnScene extends Phaser.Scene {
         var contentArray = [];
         return new Promise((resolve, reject) => {
             this.db.collection('learning-content').doc('levels').collection(level)
-            .get()
-            .then(function(querySnapshot) {
-                querySnapshot.forEach(function(doc) {
-                    contentArray[doc.id-1] = doc.data();
+                .get()
+                .then(function(querySnapshot) {
+                    querySnapshot.forEach(function(doc) {
+                        contentArray[doc.id-1] = doc.data();
+                    });
+                    return resolve(contentArray);
+                })
+                .catch(function(error) {
+                    return reject(error);
                 });
-                return resolve(contentArray);
-            })
-            .catch(function(error) {
-                return reject(error);
-            });
         });
     }
 
-    startLearning (index, content) {
+    displayLearningContent (index) {
+        const content = this.learningContent[this.player['level']]
         const level = this.player['level'];
 
         const topic = content[index]['topic'];
@@ -94,25 +90,18 @@ class LearnScene extends Phaser.Scene {
             nextButton.setInteractive({ useHandCursor: true });
             nextButton.on('pointerdown', function () { 
                 container.destroy();
-                this.startLearning(index + 1, content);
+                this.displayLearningContent(index + 1, content);
             }, this);            
         } else {
             // Finish learning for this level and go back to start screen of the computer
             const completeButton = this.add.image(750, 430, 'greyTrainButton');
             container.add(completeButton);
-            container.add(this.add.text(710, 415, 'COMPLETE', { fontFamily: 'Myriad Pro', fontSize: '30px', color: '#ffffff'}));
+            container.add(this.add.text(708, 415, 'START TEST', { fontFamily: 'Myriad Pro', fontSize: '30px', color: '#ffffff'}));
             completeButton.setScale(.75);
             completeButton.setInteractive({ useHandCursor: true });
             completeButton.on('pointerdown', function () { 
                 container.destroy();
-                // Player gets an achievement for completing learning the first level
-                if (level == 1) {
-                    this.player['achievements'].push(1);
-                    container.destroy();
-                    this.notifyPlayerAchievement();
-                } else {
-                    this.scene.start('TrainingOptions');
-                }
+                this.scene.start('Test');
             }, this); 
         }
         if (index > 0) {
@@ -123,23 +112,9 @@ class LearnScene extends Phaser.Scene {
             backButton.setInteractive({ useHandCursor: true });
             backButton.on('pointerdown', function () { 
                 container.destroy();
-                this.startLearning(index - 1, content);
+                this.displayLearningContent(index - 1, content);
             }, this);
         }
-    }
-
-    notifyPlayerAchievement () {
-        const container = this.add.container(70, 70);
-        container.add(this.add.text(70, 150, 'You have finished learning the first level and got an achievement. Check out your achievements on your phone!', { fontFamily: 'Myriad Pro', fontSize: '30px', color: '#4D4D4D', align: 'center', wordWrap: { width: 800, useAdvanceWrap: true }}));
-        
-        const completeButton = this.add.image(460, 300, 'greyTrainButton');
-        container.add(completeButton);
-        container.add(this.add.text(405, 288, 'CLOSE WINDOW', { fontFamily: 'Myriad Pro', fontSize: '25px', color: '#ffffff'}));
-        completeButton.setScale(.6);
-        completeButton.setInteractive({ useHandCursor: true });
-        completeButton.on('pointerdown', function () { 
-            this.scene.start('TrainingOptions')
-        }, this);  
     }
 }
 

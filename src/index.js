@@ -25,13 +25,13 @@ class Game extends Phaser.Game {
 		this.scene.add('Training', TrainingScene);
 		this.scene.add('TrainingOptions', TrainingOptionsScene);
 		this.scene.add('Test', TestScene);
-		this.scene.add('Learn', LearnScene);
+		this.scene.add('Learning', LearnScene);
 		this.scene.add('Meeting', MeetingRoomScene);
 		this.scene.add('CaseDescription', CaseDescriptionScene);
 		this.scene.add('CaseQuestion', CaseQuestionScene);
 
 		// Initialize the game on the first scene
-		this.scene.start('Reception');
+		this.scene.start('Training');
 
 		// Initialize the database
 		const firebaseApp = firebase.initializeApp(firebaseConfig);
@@ -62,7 +62,10 @@ class Game extends Phaser.Game {
             achievements : [],
 			objective: 1,
 			case: 1
-        }
+		}
+		
+		// An object containing all learning content. Used to prevent multiple readings from the DB
+		this.learningContent = {};
 	}
 }
 
