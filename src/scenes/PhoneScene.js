@@ -34,6 +34,7 @@ class PhoneScene extends Phaser.Scene {
 		this.load.image('trainingRoomIcon', './src/assets/training-room-icon.png');
 		this.load.image('meetingRoomIcon', './src/assets/meeting-room-icon.png');
 		this.load.image('lockRoomIcon', './src/assets/lock-room-icon.png');
+		this.load.image('closePhone', './src/assets/close-phone.png')
 	}
 
 	create () {
@@ -43,7 +44,7 @@ class PhoneScene extends Phaser.Scene {
 		bg.displayHeight = config.height;
 		bg.scaleX = bg.scaleY;*/
 		//this.cameras.main.backgroundColor = Phaser.Display.Color.HexStringToColor("#ffff00");
-		this.cameras.main.setBackgroundColor('#A9A9A9');
+		this.cameras.main.setBackgroundColor('#000000');
 
 		// Add phone screen and place it in the middle of the scene
         const phoneScreen = this.add.image(this.config.width/2, this.config.height/2, 'phoneScreen');
@@ -55,8 +56,8 @@ class PhoneScene extends Phaser.Scene {
 		homeButton.on('pointerdown', () => this.scene.restart()); 
 		
 		// Resize and place phone icon on bottom right of screen
-		const phoneIcon = this.add.image(1000, 530, 'phoneIcon');
-        phoneIcon.setScale(.7);
+		const phoneIcon = this.add.image(1000, 530, 'closePhone');
+        phoneIcon.setScale(.8);
         phoneIcon.setInteractive({ useHandCursor: true });  // Cursor style change when hovering 
         phoneIcon.on('pointerdown', () => this.closePhone()); // pointerdown = onClick event
 		
