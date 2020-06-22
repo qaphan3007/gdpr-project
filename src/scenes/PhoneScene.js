@@ -158,6 +158,7 @@ class PhoneScene extends Phaser.Scene {
 			this.lockRoomOnMap(x2, y1);
 		}
 
+		// Meeting room is only unlocked after completing second objective
 		if (currentObjective > 2) {
 			const meetingRoomIcon = this.add.image(x2, y2, 'meetingRoomIcon');
 			meetingRoomIcon.setScale(0.078);
@@ -172,8 +173,8 @@ class PhoneScene extends Phaser.Scene {
 		}
 	}
 
-	lockRoomOnMap (xCoord, yCoord) {
-		const lockRoom = this.add.image(xCoord, yCoord, 'lockRoomIcon');
+	lockRoomOnMap (x, y) {
+		const lockRoom = this.add.image(x, y, 'lockRoomIcon');
 		lockRoom.setScale(0.93);
 	}
 

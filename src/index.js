@@ -44,8 +44,8 @@ class Game extends Phaser.Game {
 
 		/* 
 			Player object:
-			1. Role: either "learner" or "trainer"
-			2. Level: advance in level by completing training 
+			1. Role: Either "learner" or "trainer"
+			2. Level: Advance in level by completing training 
 			3. Achievements: a list of achievements, correspond to the achiement ID in the database
 				Achievement 1: Finish learning one level of GDPR.
 				Achievement 2: Finish testing one level of GDPR.
@@ -56,12 +56,14 @@ class Game extends Phaser.Game {
 				Objective 2: Complete one level of learning and testing GDPR knowledge at the training room. (unlock meeting room upon completion)
 				Objective 3: Solve one case at the meeting room.
 				Objective 4: Congratulations, you finished all objectives.
+			5. Case: Keep track of the current case, increase after solving current case
 		*/
 		this.player = {
             role: "",
             level: 1,
             achievements : [],
-            objective: 1,
+			objective: 1,
+			case: 1
         }
 	}
 }
