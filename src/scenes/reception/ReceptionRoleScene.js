@@ -91,6 +91,7 @@ class ReceptionRoleScene extends Phaser.Scene {
         completeButton.setScale(.6);
         completeButton.setInteractive({ useHandCursor: true });
         completeButton.on('pointerdown', function () { 
+            this.player['newObjective'] = true;
             this.scene.start('Reception')
         }, this);  
     }
