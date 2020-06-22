@@ -79,7 +79,7 @@ class LearnScene extends Phaser.Scene {
         const description = content[index]['description'];
         
         const container = this.add.container(70, 70);
-        container.add(this.add.text(390, 0, topic, { fontFamily: 'Myriad Pro Bold', fontSize: '38px', color: '#4D4D4D'}));
+        container.add(this.add.text(370, 0, topic, { fontFamily: 'Myriad Pro Bold', fontSize: '38px', color: '#4D4D4D', align: 'center', wordWrap: { width: 400, useAdvanceWrap: true }}));
         container.add(this.add.text(0, 70, description, { fontFamily: 'Myriad Pro', fontSize: '25px', color: '#4D4D4D', align: 'left', wordWrap: { width: 930, useAdvanceWrap: true }}));
         
         if (index < content.length - 1) {

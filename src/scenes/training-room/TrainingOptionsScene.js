@@ -71,7 +71,7 @@ class TrainingOptionsScene extends Phaser.Scene {
             const lockIcon = this.add.image(520, circleYCoord, 'lockIcon');
             lockIcon.setScale(0.05);
         } else {
-            const levelTwoButton = this.add.circle(520, circleYCoord, 30, lockedLevelColor);
+            const levelTwoButton = this.add.circle(520, circleYCoord, 30, unlockedLevelColor);
             this.add.text(514, 285, '2', { fontFamily: 'Myriad Pro Bold', fontSize: '30px', color: '#4D4D4D'});
             levelTwoButton.setInteractive({ useHandCursor: true }); 
             levelTwoButton.on('pointerdown', () => this.scene.start('Learning')); 
