@@ -65,7 +65,6 @@ class CaseQuestionScene extends Phaser.Scene {
                 return resolve(questionArray);
             })
             .catch(function(error) {
-                console.log("Error getting documents: ", error);
                 return reject(error);
             });
         });

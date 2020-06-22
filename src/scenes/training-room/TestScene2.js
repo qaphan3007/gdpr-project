@@ -136,8 +136,8 @@ class TestScene2 extends Phaser.Scene {
 
     
     nextQuestion () {
-        // Restart timer to 60
-        this.currentTimer = 60;
+        // Add 10 seconds to timer
+        this.currentTimer += 10;
 
         this.container = this.add.container(0, 0);
 
