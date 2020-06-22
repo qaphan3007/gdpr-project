@@ -23,9 +23,9 @@ class TrainingScene extends Phaser.Scene {
 
     create () {
         this.updateLearningContent();
-
+        this.createBackground();
     }
-    
+
     createBackground () {
         const config = this.sys.game.config;
         const bg = this.add.image(0, 0, 'trainingRoom');
