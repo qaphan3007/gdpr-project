@@ -6,6 +6,10 @@ class MeetingRoomScene extends Phaser.Scene {
         super('Meeting') 
     }
 
+    init () {
+        this.player = this.sys.game.player;
+    }
+
     preload () {
         this.load.image('meetingRoom', './src/assets/meeting-room-icon.png');
         this.load.image('transparentBox', './src/assets/transparent-rect.png');

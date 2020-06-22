@@ -6,18 +6,12 @@ class TrainingScene extends Phaser.Scene {
         super('Training') 
     }
 
-<<<<<<< HEAD
-    init () {
-        this.player = this.sys.game.player;
-    }
-
-=======
     init() {
         this.db = this.sys.game.db;
+        this.player = this.sys.game.player;
         this.learningContent = this.sys.game.learningContent;
     }
     
->>>>>>> 97e465e130d6c4c94a8d23814166d72bcf9befcd
     preload () {
         this.load.image('trainingRoom', './src/assets/training-room.png');
         this.load.image('transparentBox', './src/assets/transparent-rect.png');
