@@ -202,6 +202,7 @@ class PhoneScene extends Phaser.Scene {
 				this.add.image(440, 190 + 60 * counter, 'achievementTrophy');
 			});
 		}
+		this.player['newAchievement'] = false; // Checked achievement no longer gives phone notif
 	}
 
 	async openObjective () {
@@ -219,6 +220,7 @@ class PhoneScene extends Phaser.Scene {
 		this.toggleHomeScreenIcon();
 
         this.add.text(445, 260, currentObjective, { fontFamily: 'Myriad Pro', fontSize: '25px', color: 'white', align: 'center', wordWrap: { width: 175, useAdvanceWrap: true }});
+		this.player['newObjective'] = false;
 	}
 
 	openMessage () {

@@ -63,7 +63,9 @@ class Game extends Phaser.Game {
             level: 1,
             achievements : [],
 			objective: 1,
-			case: 1
+			case: 1,
+			newObjective: true,
+			newAchievement: false
         }
 	}
 }

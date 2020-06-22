@@ -42,9 +42,16 @@ class ReceptionScene extends Phaser.Scene {
         // Initialize position and styling of dialogue text
         this.dialogueText = this.add.text(470, 110, ' ', { fontFamily: 'Myriad Pro', fontSize: '22px', color: '#4D4D4D', align: 'left', wordWrap: { width: 190, useAdvancedWrap: true }})
         
+        // Make phone notification if there are new achievements or objectives
+        if (this.player['newAchievement'] || this.player['newObjective']) {
+            this.notifCircle = this.add.circle(1015, 505, 10, 0xFD1818);
+            // notifCircle alternates between visible/invisible every 0.5 seconds
+            this.notifEvent = this.time.addEvent({ delay: 500, callback: () => {this.notifCircle.visible = !this.notifCircle.visible}, callbackScope: this, loop: true });    
+        }
+        
         // Player can only choose role once
         if (this.player['role'] == '') {
-            this.dialogueText.setText('Welcome! Please press on me to choose a role.');
+            this.dialogueText.setText('Welcome! You can press on me to choose a role.');
             receptionist.setInteractive({ useHandCursor: true })
             receptionist.on('pointerdown', () => {
                 this.scene.start('ReceptionRole');
@@ -53,7 +60,7 @@ class ReceptionScene extends Phaser.Scene {
             // Dialogue changes depending on how many levels the player have compelted
             if (this.player['level'] == 1) {
                 this.dialogueText.setPosition(470, 101);
-                this.dialogueText.setText('Welcome. If you are lost, how about consulting your phone?');
+                this.dialogueText.setText('If you are lost, how about consulting your phone?');
             } else if (this.player['level']  == 2) {
                 this.dialogueText.setPosition(470, 101);
                 this.dialogueText.setText('You beat level 1! Check your phone for new achievements!')

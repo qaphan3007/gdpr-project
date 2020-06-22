@@ -235,6 +235,7 @@ class TestScene extends Phaser.Scene {
             // Player gets an achievement for completing testing the first level, finish objective 2
             if (this.player['level'] == 1) {
                 this.player['achievements'].push(2);
+                this.player['newAchievement'] = true;
                 this.player['objective'] = 3;
             }
             const clearButton = this.add.image(450, 500, 'greyTrainButton');
