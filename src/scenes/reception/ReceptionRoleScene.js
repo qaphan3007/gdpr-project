@@ -62,6 +62,7 @@ class ReceptionRoleScene extends Phaser.Scene {
         learnerButton.on('pointerdown', function () { 
             this.player['role'] = 'learner';
             this.player['objective'] = 2;
+            this.player['newObjective'] = true;
             this.addPlayerToDB(this.player);
             container.destroy();
             this.noticeObjectiveComplete();

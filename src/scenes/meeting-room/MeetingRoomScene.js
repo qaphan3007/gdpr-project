@@ -33,6 +33,12 @@ class MeetingRoomScene extends Phaser.Scene {
         // Open phone scene on click
         phoneIcon.on('pointerdown', () => this.scene.start('Phone', { location : './src/assets/meeting-room.png' , prevScene : 'Meeting'})); // pointerdown = onClick event
 
+        // Make phone notification if there are new achievements or objectives
+        if (this.player['newAchievement'] || this.player['newObjective']) {
+            this.notifCircle = this.add.circle(1015, 505, 10, 0xFD1818);
+            this.notifEvent = this.time.addEvent({ delay: 500, callback: () => {this.notifCircle.visible = !this.notifCircle.visible}, callbackScope: this, loop: true });    
+        }
+        
         const caseButton = this.add.text(515, 175, 'PRESS HERE TO START', { fontFamily: 'Myriad Pro', fontSize: '25px', color: '#ffffff'}).setPadding(64, 16).setBackgroundColor('#442E55').setInteractive({ useHandCursor: true });
         caseButton.on('pointerdown', () => {
             caseButton.destroy();

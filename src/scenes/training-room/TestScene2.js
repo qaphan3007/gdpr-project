@@ -218,16 +218,19 @@ class TestScene2 extends Phaser.Scene {
             container.add(this.add.text(240, 180, 'Incorrect', { fontFamily: 'Myriad Pro', fontSize: '30px', color: '#DC143C'} ));
         }
 
-        // If all answers correct, next level
+        // If all answers correct, finish demo
         if (correctCount == correctMax) {
             container.add(this.add.text(120, 380, 'Congratulations! You have completed all the levels for this demo.', { fontFamily: 'Myriad Pro', fontSize: '30px', color: '#4D4D4D'} ));
             
-            // Player gets an achievement for completing testing the first level, finish objective 2
-            if (this.player['level'] == 1) {
+            if (this.difficulty == 'Easy' && ! this.player['achievements'].includes(1)) {
+                this.player['achievements'].push(1);
+                this.player['newAchievement'] = true;
+            }
+            if (this.difficulty == 'Hard' && ! this.player['achievements'].includes(2)) {
                 this.player['achievements'].push(2);
                 this.player['newAchievement'] = true;
-                this.player['objective'] = 3;
-            }
+            } 
+
             const clearButton = this.add.image(500, 500, 'greyTrainButton');
             container.add(clearButton);
             container.add(this.add.text(400, 485, 'RETURN TO RECEPTION', { fontFamily: 'Myriad Pro', fontSize: '30px', color: '#ffffff'}));

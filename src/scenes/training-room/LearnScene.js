@@ -108,6 +108,7 @@ class LearnScene extends Phaser.Scene {
                 // Player gets an achievement for completing learning the first level
                 if (level == 1) {
                     this.player['achievements'].push(1);
+                    this.player['newAchievement'] = true;
                     container.destroy();
                     this.notifyPlayerAchievement();
                 } else {
@@ -138,7 +139,7 @@ class LearnScene extends Phaser.Scene {
         completeButton.setScale(.6);
         completeButton.setInteractive({ useHandCursor: true });
         completeButton.on('pointerdown', function () { 
-            this.scene.start('TrainingOptions')
+            this.scene.start('Training')
         }, this);  
     }
 }
