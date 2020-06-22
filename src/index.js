@@ -27,7 +27,7 @@ class Game extends Phaser.Game {
 		this.scene.add('TrainingOptions', TrainingOptionsScene);
 		this.scene.add('Test', TestScene);
 		this.scene.add('TestLevel2', TestScene2)
-		this.scene.add('Learn', LearnScene);
+		this.scene.add('Learning', LearnScene);
 		this.scene.add('Meeting', MeetingRoomScene);
 		this.scene.add('CaseDescription', CaseDescriptionScene);
 		this.scene.add('CaseQuestion', CaseQuestionScene);
@@ -47,8 +47,8 @@ class Game extends Phaser.Game {
 			1. Role: Either "learner" or "trainer"
 			2. Level: Advance in level by completing training 
 			3. Achievements: a list of achievements, correspond to the achiement ID in the database
-				Achievement 1: Finish learning one level of GDPR.
-				Achievement 2: Finish testing one level of GDPR.
+				Achievement 1: Finish one test in easy mode.
+				Achievement 2: Finish one test in hard mode.
 				Achievement 3: Finish learning and testing all levels of GDPR.
 				Achievement 4: Finish solving a GDPR case 
 			4. Objectives: Indicate the current objective the player currently need to complete.
@@ -66,7 +66,10 @@ class Game extends Phaser.Game {
 			case: 1,
 			newObjective: true,
 			newAchievement: false
-        }
+		}
+
+		// An object containing all learning content. Used to prevent multiple readings from the DB
+		this.learningContent = {};
 	}
 }
 

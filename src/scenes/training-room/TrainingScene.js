@@ -6,10 +6,18 @@ class TrainingScene extends Phaser.Scene {
         super('Training') 
     }
 
+<<<<<<< HEAD
     init () {
         this.player = this.sys.game.player;
     }
 
+=======
+    init() {
+        this.db = this.sys.game.db;
+        this.learningContent = this.sys.game.learningContent;
+    }
+    
+>>>>>>> 97e465e130d6c4c94a8d23814166d72bcf9befcd
     preload () {
         this.load.image('trainingRoom', './src/assets/training-room.png');
         this.load.image('transparentBox', './src/assets/transparent-rect.png');
@@ -21,6 +29,11 @@ class TrainingScene extends Phaser.Scene {
     }
 
     create () {
+        this.updateLearningContent();
+        this.createBackground();
+    }
+
+    createBackground () {
         const config = this.sys.game.config;
         const bg = this.add.image(0, 0, 'trainingRoom');
         
@@ -54,6 +67,38 @@ class TrainingScene extends Phaser.Scene {
             trainButton.disableInteractive();
             this.scene.start('TrainingOptions');
         }, this);
+    }
+
+    // Load learning content from DB in this scene to ensure it is loaded before TrainingOptions
+    updateLearningContent () {
+        const levels = ['1', '2'];
+        if (Object.keys(this.learningContent).length == 0 ) {
+            levels.forEach(async (level) => {
+                var contentArray = await this.getLearningContentFromDB(level)
+                    .then((content) => { return content });
+                this.learningContent[level] = contentArray;
+            });
+        } 
+    }
+
+    async getLearningContentFromDB(level) {
+        /* 
+            Get all learning content and save it to send to LearnScene
+         */
+        var contentArray = [];
+        return new Promise((resolve, reject) => {
+            this.db.collection('learning-content').doc('levels').collection(level)
+                .get()
+                .then(function(querySnapshot) {
+                    querySnapshot.forEach(function(doc) {
+                        contentArray[doc.id-1] = doc.data();
+                    });
+                    return resolve(contentArray);
+                })
+                .catch(function(error) {
+                    return reject(error);
+                });
+        });
     }
 }
 
