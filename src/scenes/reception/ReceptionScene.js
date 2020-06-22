@@ -1,4 +1,5 @@
 import 'phaser';
+import { LEFT } from 'phaser';
 
 class ReceptionScene extends Phaser.Scene {
     constructor() {
@@ -11,6 +12,8 @@ class ReceptionScene extends Phaser.Scene {
 
     preload () {
         this.load.image('reception', './src/assets/reception.png' );
+        this.load.image('dialogueBox', './src/assets/dialogue-box.png');
+        this.load.image('receptionist', './src/assets/receptionist.png');
         this.load.image('phoneIcon', './src/assets/phone-icon.png');
         this.load.image('phoneScreen', './src/assets/phone-screen.png');
     }
@@ -32,13 +35,18 @@ class ReceptionScene extends Phaser.Scene {
         phoneIcon.setInteractive({ useHandCursor: true });  // Cursor style change when hovering 
         phoneIcon.on('pointerdown', () => this.openPhone()); // pointerdown = onClick event
 
+        const dialogueBox = this.add.image(560, 150, 'dialogueBox');
+        dialogueBox.setScale(.9);
+        const receptionist = this.add.image(430, 290, 'receptionist').setInteractive({ useHandCursor: true });
+        receptionist.setScale(.8);
         // Player can only choose role once
         if (this.player.role == '') {
-            const caseButton = this.add.text(515, 175, 'PRESS HERE TO START', { fontFamily: 'Myriad Pro', fontSize: '25px', color: '#ffffff'}).setPadding(64, 16).setBackgroundColor('#442E55').setInteractive({ useHandCursor: true });
-            caseButton.on('pointerdown', () => {
-                caseButton.destroy();
+            this.add.text(470, 110, 'Welcome! Please press on me to choose a role.', { fontFamily: 'Myriad Pro', fontSize: '22px', color: '#4D4D4D', align: 'left', wordWrap: { width: 190, useAdvancedWrap: true }})
+            receptionist.on('pointerdown', () => {
                 this.scene.start('ReceptionRole');
             });   
+        } else {
+            this.add.text(470, 101, 'Welcome. If you are lost, how about consulting your phone?', { fontFamily: 'Myriad Pro', fontSize: '22px', color: '#4D4D4D', align: 'left', wordWrap: { width: 190, useAdvancedWrap: true }})
         }
     }
 
