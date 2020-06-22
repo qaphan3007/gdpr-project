@@ -8,6 +8,7 @@ class TrainingOptionsScene extends Phaser.Scene {
     init () {
         this.player = this.sys.game.player;
         this.learningContent = this.sys.game.learningContent;
+        this.hasLoaded = false;
     }
  
     preload () {
@@ -68,20 +69,21 @@ class TrainingOptionsScene extends Phaser.Scene {
         // Lock level 2 only if the current level is 1
         if (this.player['level'] == 1) {
             this.add.circle(520, circleYCoord, 30, lockedLevelColor);
+            this.add.rectangle(360, circleYCoord, 230, 5, lockedLevelColor);
             const lockIcon = this.add.image(520, circleYCoord, 'lockIcon');
             lockIcon.setScale(0.05);
         } else {
             const levelTwoButton = this.add.circle(520, circleYCoord, 30, unlockedLevelColor);
-            this.add.text(514, 285, '2', { fontFamily: 'Myriad Pro Bold', fontSize: '30px', color: '#4D4D4D'});
             levelTwoButton.setInteractive({ useHandCursor: true }); 
             levelTwoButton.on('pointerdown', () => this.scene.start('Learning')); 
+            this.add.rectangle(360, circleYCoord, 230, 5, unlockedLevelColor);
+            this.add.text(514, 285, '2', { fontFamily: 'Myriad Pro Bold', fontSize: '30px', color: '#4D4D4D'});
         }
 
         this.add.circle(840, circleYCoord, 30, lockedLevelColor);
+        this.add.rectangle(680, circleYCoord, 230, 5, lockedLevelColor);
         const lockIcon = this.add.image(840, circleYCoord, 'lockIcon');
         lockIcon.setScale(0.05);
-
-        this.displayTopicByLevel();
     }
 
     displayTopicByLevel () {
@@ -90,12 +92,19 @@ class TrainingOptionsScene extends Phaser.Scene {
             const startXCoord = level == '1' ? 50 : 370;
             const container = this.add.container(startXCoord, 0);
             if (Object.keys(this.learningContent).length > 0) {
+                this.hasLoaded = true; 
                 const topicByLevel = this.learningContent[level].map(content => { return content['topic']; })
                 topicByLevel.forEach((topic, id) => {
                     container.add(this.add.text(100, 350 + 25 * id, '* ' + topic, { fontFamily: 'Myriad Pro', fontSize: '22px', color: '#4D4D4D'}));
-                });     
+                });    
             } 
         });
-    }   
+    } 
+    
+    update () {
+        if (Object.keys(this.learningContent).length > 0 && this.hasLoaded == false) {
+            this.displayTopicByLevel();
+        }
+    }
 }
 export default TrainingOptionsScene;
