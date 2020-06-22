@@ -50,8 +50,8 @@ class Game extends Phaser.Game {
 				Achievement 3: Finish learning and testing all levels of GDPR.
 				Achievement 4: Finish solving a GDPR case 
 			4. Objectives: Indicate the current objective the player currently need to complete.
-				Objective 1: Choose a role at the reception.
-				Objective 2: Complete one level of learning and testing GDPR knowledge at the training room.
+				Objective 1: Choose a role at the reception. (unlock training room upon completion)
+				Objective 2: Complete one level of learning and testing GDPR knowledge at the training room. (unlock meeting room upon completion)
 				Objective 3: Solve one case at the meeting room.
 				Objective 4: Congratulations, you finished all objectives.
 		*/
