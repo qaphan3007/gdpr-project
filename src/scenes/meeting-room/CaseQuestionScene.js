@@ -96,11 +96,11 @@ class CaseQuestionScene extends Phaser.Scene {
 
         alternatives.forEach((alternative, currentIndex) => {
             const altText = (currentIndex + 1).toString() + ') ' + alternative['alt']
-            const alt = this.add.text(20, 100 + (currentIndex + 1) * 40, altText, { fontFamily: 'Myriad Pro', fontSize: '25px', color: '#4D4D4D', align: 'left', wordWrap: { width: 930, useAdvanceWrap: true }});
+            const alt = this.add.text(20, 100 + (currentIndex + 1) * 40, altText, { fontFamily: 'Myriad Pro', fontSize: '25px', color: '#B3B3B3', align: 'left', wordWrap: { width: 930, useAdvanceWrap: true }});
             container.add(alt);
             alt.setInteractive({ useHandCursor: true });
-            alt.on('pointerover', () => alt.setColor('#B3B3B3') );  // Change text color on hover
-            alt.on('pointerout', () => alt.setColor('#4D4D4D') );
+            alt.on('pointerover', () => alt.setColor('#4D4D4D') );  // Change text color on hover
+            alt.on('pointerout', () => alt.setColor('#B3B3B3') );
             alt.on('pointerdown', () => {
                 container.destroy();
                 this.showFeedback(questionNum, questions, currentIndex);
