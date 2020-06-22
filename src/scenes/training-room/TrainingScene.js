@@ -24,6 +24,9 @@ class TrainingScene extends Phaser.Scene {
     create () {
         this.updateLearningContent();
 
+    }
+    
+    createBackground () {
         const config = this.sys.game.config;
         const bg = this.add.image(0, 0, 'trainingRoom');
         
@@ -54,7 +57,7 @@ class TrainingScene extends Phaser.Scene {
     }
 
     // Load learning content from DB in this scene to ensure it is loaded before TrainingOptions
-    async updateLearningContent () {
+    updateLearningContent () {
         const levels = ['1', '2'];
         if (Object.keys(this.learningContent).length == 0 ) {
             levels.forEach(async (level) => {

@@ -89,12 +89,13 @@ class TrainingOptionsScene extends Phaser.Scene {
         levels.forEach(level => {
             const startXCoord = level == '1' ? 50 : 370;
             const container = this.add.container(startXCoord, 0);
-            const topicByLevel = this.learningContent[level].map(content => { return content['topic']; })
-            topicByLevel.forEach((topic, id) => {
-                container.add(this.add.text(100, 350 + 25 * id, '* ' + topic, { fontFamily: 'Myriad Pro', fontSize: '22px', color: '#4D4D4D'}));
-            });     
+            if (Object.keys(this.learningContent).length > 0) {
+                const topicByLevel = this.learningContent[level].map(content => { return content['topic']; })
+                topicByLevel.forEach((topic, id) => {
+                    container.add(this.add.text(100, 350 + 25 * id, '* ' + topic, { fontFamily: 'Myriad Pro', fontSize: '22px', color: '#4D4D4D'}));
+                });     
+            } 
         });
-
     }   
 }
 export default TrainingOptionsScene;
