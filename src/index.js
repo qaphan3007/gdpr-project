@@ -10,6 +10,7 @@ import PhoneScene from './scenes/PhoneScene';
 import TrainingScene from './scenes/training-room/TrainingScene';
 import TrainingOptionsScene from './scenes/training-room/TrainingOptionsScene';
 import TestScene from './scenes/training-room/TestScene';
+import TestScene2 from './scenes/training-room/TestScene2';
 import LearnScene from './scenes/training-room/LearnScene';
 import MeetingRoomScene from './scenes/meeting-room/MeetingRoomScene';
 import CaseDescriptionScene from './scenes/meeting-room/CaseDescriptionScene';
@@ -25,6 +26,7 @@ class Game extends Phaser.Game {
 		this.scene.add('Training', TrainingScene);
 		this.scene.add('TrainingOptions', TrainingOptionsScene);
 		this.scene.add('Test', TestScene);
+		this.scene.add('TestLevel2', TestScene2)
 		this.scene.add('Learn', LearnScene);
 		this.scene.add('Meeting', MeetingRoomScene);
 		this.scene.add('CaseDescription', CaseDescriptionScene);

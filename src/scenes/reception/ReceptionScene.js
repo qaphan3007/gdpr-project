@@ -46,7 +46,14 @@ class ReceptionScene extends Phaser.Scene {
                 this.scene.start('ReceptionRole');
             });   
         } else {
-            this.add.text(470, 101, 'Welcome. If you are lost, how about consulting your phone?', { fontFamily: 'Myriad Pro', fontSize: '22px', color: '#4D4D4D', align: 'left', wordWrap: { width: 190, useAdvancedWrap: true }})
+            // Dialogue changes depending on how many levels the player have compelted
+            if (this.player.level == 1) {
+                this.add.text(470, 101, 'Welcome. If you are lost, how about consulting your phone?', { fontFamily: 'Myriad Pro', fontSize: '22px', color: '#4D4D4D', align: 'left', wordWrap: { width: 190, useAdvancedWrap: true }})
+            } if (this.player.level == 2) {
+                this.add.text(470, 101, 'You beat level 1! Check your phone for new achievements!', { fontFamily: 'Myriad Pro', fontSize: '22px', color: '#4D4D4D', align: 'left', wordWrap: { width: 190, useAdvancedWrap: true }})
+            } else {
+                this.add.text(470, 110, 'Congratulations! You have beat all levels in this demo!', { fontFamily: 'Myriad Pro', fontSize: '22px', color: '#4D4D4D', align: 'left', wordWrap: { width: 190, useAdvancedWrap: true }})
+            }
         }
     }
 
