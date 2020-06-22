@@ -59,12 +59,13 @@ class ReceptionScene extends Phaser.Scene {
         } else {
             // Dialogue changes depending on how many levels the player have compelted
             if (this.player['level'] == 1) {
-                this.dialogueText.setPosition(470, 101);
+                // this.dialogueText.setPosition(470, 101);
                 this.dialogueText.setText('If you are lost, how about consulting your phone?');
             } else if (this.player['level']  == 2) {
-                this.dialogueText.setPosition(470, 101);
-                this.dialogueText.setText('You beat level 1! Check your phone for new achievements!')
+                // this.dialogueText.setPosition(470, 101);
+                this.dialogueText.setText('You beat level 1! Did you finish level 2?')
             } else if (this.player['level'] > 2 && this.player['objective'] == 4) {
+                // this.dialogueText.setPosition(470, 101);
                 this.dialogueText.setText('Congratulations! You have beat all levels in this demo!')
             } else {
                 this.dialogueText.setText('You can consult your phone for the next objective.')

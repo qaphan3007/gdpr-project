@@ -172,7 +172,7 @@ class CaseQuestionScene extends Phaser.Scene {
         this.player['newObjective'] = true;
         
         const container = this.add.container(70, 70);
-        container.add(this.add.text(70, 150, 'You have finished solving a case and got an achievement. Check out your achievements on your phone! You also finished all objectives and unlocked all rooms. Congratulations!', { fontFamily: 'Myriad Pro', fontSize: '30px', color: '#4D4D4D', align: 'center', wordWrap: { width: 800, useAdvanceWrap: true }}));
+        container.add(this.add.text(70, 150, 'You have finished solving a case and got an achievement. Check out your achievements on your phone! You also finished all objectives and unlocked all rooms available in this demo. Congratulations!', { fontFamily: 'Myriad Pro', fontSize: '30px', color: '#4D4D4D', align: 'center', wordWrap: { width: 800, useAdvanceWrap: true }}));
         
         const completeButton = this.add.image(460, 300, 'greyTrainButton');
         container.add(completeButton);

@@ -97,7 +97,7 @@ class TestScene2 extends Phaser.Scene {
         };
 
         this.container.add(this.add.ellipse(490, 350, 200, 100, 0x4D4D4D));
-        this.container.add(this.add.text(430, 330, 'Accuracy', { fontFamily: 'Myriad Pro', fontSize: '30px', color: '#FFFFFF'}));
+        this.container.add(this.add.text(450, 330, 'Accuracy', { fontFamily: 'Myriad Pro', fontSize: '30px', color: '#FFFFFF'}));
 
         //  16px padding around all sides. Text with bg color and padding creates a rectangle around it
         const alt1 = this.add.text(120, 170, 'Retain the data for a necessary limited period and then erase.', textStyle).setPadding(16).setBackgroundColor('#B3EEFF');
@@ -243,7 +243,7 @@ class TestScene2 extends Phaser.Scene {
         } else {  // Retry the level if not all answers are correct.
             container.add(this.add.text(120, 380, 'You need to answer all questions correctly to pass the level.', { fontFamily: 'Myriad Pro', fontSize: '30px', color: '#4D4D4D'} ));
 
-            const retryButton = this.add.image(300, 500, 'greyTrainButton');
+            const retryButton = this.add.image(500, 500, 'greyTrainButton');
             container.add(retryButton);
             container.add(this.add.text(400, 485, 'RETRY LEVEL', { fontFamily: 'Myriad Pro', fontSize: '30px', color: '#ffffff'}));
             retryButton.setScale(.75);
