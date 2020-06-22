@@ -1,5 +1,4 @@
 import 'phaser';
-import { LEFT } from 'phaser';
 
 class ReceptionScene extends Phaser.Scene {
     constructor() {
@@ -37,22 +36,29 @@ class ReceptionScene extends Phaser.Scene {
 
         const dialogueBox = this.add.image(560, 150, 'dialogueBox');
         dialogueBox.setScale(.9);
-        const receptionist = this.add.image(430, 290, 'receptionist').setInteractive({ useHandCursor: true });
+        const receptionist = this.add.image(430, 290, 'receptionist');
         receptionist.setScale(.8);
+
+        // Initialize position and styling of dialogue text
+        this.dialogueText = this.add.text(470, 110, ' ', { fontFamily: 'Myriad Pro', fontSize: '22px', color: '#4D4D4D', align: 'left', wordWrap: { width: 190, useAdvancedWrap: true }})
+        
         // Player can only choose role once
-        if (this.player.role == '') {
-            this.add.text(470, 110, 'Welcome! Please press on me to choose a role.', { fontFamily: 'Myriad Pro', fontSize: '22px', color: '#4D4D4D', align: 'left', wordWrap: { width: 190, useAdvancedWrap: true }})
+        if (this.player['role'] == '') {
+            this.dialogueText.setText('Welcome! Please press on me to choose a role.');
+            receptionist.setInteractive({ useHandCursor: true })
             receptionist.on('pointerdown', () => {
                 this.scene.start('ReceptionRole');
             });   
         } else {
             // Dialogue changes depending on how many levels the player have compelted
-            if (this.player.level == 1) {
-                this.add.text(470, 101, 'Welcome. If you are lost, how about consulting your phone?', { fontFamily: 'Myriad Pro', fontSize: '22px', color: '#4D4D4D', align: 'left', wordWrap: { width: 190, useAdvancedWrap: true }})
-            } if (this.player.level == 2) {
-                this.add.text(470, 101, 'You beat level 1! Check your phone for new achievements!', { fontFamily: 'Myriad Pro', fontSize: '22px', color: '#4D4D4D', align: 'left', wordWrap: { width: 190, useAdvancedWrap: true }})
+            if (this.player['level'] == 1) {
+                this.dialogueText.setPosition(470, 101);
+                this.dialogueText.setText('Welcome. If you are lost, how about consulting your phone?');
+            } else if (this.player['level']  == 2) {
+                this.dialogueText.setPosition(470, 101);
+                this.dialogueText.setText('You beat level 1! Check your phone for new achievements!')
             } else {
-                this.add.text(470, 110, 'Congratulations! You have beat all levels in this demo!', { fontFamily: 'Myriad Pro', fontSize: '22px', color: '#4D4D4D', align: 'left', wordWrap: { width: 190, useAdvancedWrap: true }})
+                this.dialogueText.setText('Congratulations! You have beat all levels in this demo!')
             }
         }
     }

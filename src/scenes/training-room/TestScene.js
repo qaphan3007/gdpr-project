@@ -43,7 +43,7 @@ class TestScene extends Phaser.Scene {
         const closeTrainingButton = this.add.image(50, 50, 'closeTraining');
         closeTrainingButton.setInteractive({ useHandCursor: true }); 
         closeTrainingButton.on('pointerdown', () => this.scene.start('Training')); 
-        if (this.player.level == 1) {
+        if (this.player['level'] == 1) {
             this.startLevelOne();
         } else {
             this.scene.start('TestLevel2');
@@ -230,10 +230,10 @@ class TestScene extends Phaser.Scene {
 
         // If all answers correct, next level
         if (correctCount == correctMax) {
-            container.add(this.add.text(120, 380, 'You have completed this level!', { fontFamily: 'Myriad Pro', fontSize: '30px', color: '#4D4D4D'} ));
+            container.add(this.add.text(120, 400, 'You have completed this level!', { fontFamily: 'Myriad Pro', fontSize: '30px', color: '#4D4D4D'} ));
             
             // Player gets an achievement for completing testing the first level, finish objective 2
-            if (this.player.level == 1) {
+            if (this.player['level'] == 1) {
                 this.player['achievements'].push(2);
                 this.player['objective'] = 3;
             }

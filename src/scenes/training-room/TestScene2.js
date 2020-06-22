@@ -223,7 +223,7 @@ class TestScene2 extends Phaser.Scene {
             container.add(this.add.text(120, 380, 'Congratulations! You have completed all the levels for this demo.', { fontFamily: 'Myriad Pro', fontSize: '30px', color: '#4D4D4D'} ));
             
             // Player gets an achievement for completing testing the first level, finish objective 2
-            if (this.player.level == 1) {
+            if (this.player['level'] == 1) {
                 this.player['achievements'].push(2);
                 this.player['objective'] = 3;
             }
