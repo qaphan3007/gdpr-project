@@ -18,6 +18,7 @@ import LunchDialogue from './scenes/lunch-room/LunchDialogue';
 import MeetingRoomScene from './scenes/meeting-room/MeetingRoomScene';
 import CaseDescriptionScene from './scenes/meeting-room/CaseDescriptionScene';
 import CaseQuestionScene from './scenes/meeting-room/CaseQuestionScene';
+import ConferenceScene from './scenes/conference-room/ConferenceScene';
 
 class Game extends Phaser.Game {
 	constructor () {
@@ -37,9 +38,10 @@ class Game extends Phaser.Game {
 		this.scene.add('Meeting', MeetingRoomScene);
 		this.scene.add('CaseDescription', CaseDescriptionScene);
 		this.scene.add('CaseQuestion', CaseQuestionScene);
+		this.scene.add('Conference', ConferenceScene);
 
 		// Initialize the game on the first scene
-		this.scene.start('LunchDialogue');
+		this.scene.start('Reception');
 
 		// Initialize the database
 		const firebaseApp = firebase.initializeApp(firebaseConfig);
@@ -72,7 +74,21 @@ class Game extends Phaser.Game {
 			case: 1,
 			newObjective: true,
 			newAchievement: false,
-			adaDialogue: 1
+			adaDialogue: 1,
+			statistics: {
+				1: {
+					attempts: "0",
+					time: "None"
+				},
+				2: {
+					attempts: "0",
+					time: "None"
+				},
+				3: {
+					attempts: "0",
+					time: "None"
+				},
+			}
 		}
 
 		// An object containing all learning content. Used to prevent multiple readings from the DB

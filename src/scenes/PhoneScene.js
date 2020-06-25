@@ -27,12 +27,14 @@ class PhoneScene extends Phaser.Scene {
 		this.load.image('achievementIcon', './src/assets/achievement-icon.png');
 		this.load.image('achievementScreen', './src/assets/achievement-screen.png');
 		this.load.image('achievementTrophy', './src/assets/trophy.png');
+		this.load.image('statisticsIcon', './src/assets/statistics-icon.png');
+		this.load.image('statisticsScreen', './src/assets/statistics-screen.png');
 		this.load.image('mapIcon', './src/assets/map-icon.png');
 		this.load.image('mapScreen', './src/assets/map-screen.png');
-		this.load.image('messageIcon', './src/assets/message-icon.png');
 		this.load.image('receptionIcon', './src/assets/reception-icon.png'); // Phone icons
 		this.load.image('trainingRoomIcon', './src/assets/training-room-icon.png');
-		this.load.image('meetingRoomIcon', './src/assets/meeting-room-icon.png');
+		this.load.image('officeRoomIcon', './src/assets/meeting-room-icon.png');
+		this.load.image('lunchRoomIcon', './src/assets/meeting-room-icon.png');
 		this.load.image('lockRoomIcon', './src/assets/lock-room-icon.png');
 		this.load.image('closePhone', './src/assets/close-phone.png')
 	}
@@ -75,12 +77,12 @@ class PhoneScene extends Phaser.Scene {
 		this.achievementIcon = this.add.image(562, 180, 'achievementIcon');
 		this.achievementIcon.setInteractive({ useHandCursor: true });
 		this.achievementIcon.on('pointerdown', () => this.openAchievement()); 
-		
-		// Place the message icon where it is on the phone
-		this.messageIcon = this.add.image(618, 180, 'messageIcon');
-		this.messageIcon.setInteractive({ useHandCursor: true });
-		this.messageIcon.on('pointerdown', () => this.openMessage()); 
 
+		// Place the statistics icon where it is on the phone
+		this.statisticsIcon = this.add.image(618, 180, 'statisticsIcon');
+		this.statisticsIcon.setInteractive({ useHandCursor: true });
+		this.statisticsIcon.on('pointerdown', () => this.openStatistics()); 
+		
 		// Place notification circle if there is unseen objective
 		if (this.player['newObjective']) {
 			this.newObjectiveNotif = this.add.circle(463, 159, 7, 0xFD1818);
@@ -125,7 +127,7 @@ class PhoneScene extends Phaser.Scene {
 		this.toggleInteractive(this.mapIcon); // Turn off inputs from buttons on home screen
 		this.toggleInteractive(this.objectiveIcon); 
 		this.toggleInteractive(this.achievementIcon); 
-		this.toggleInteractive(this.messageIcon); 
+		this.toggleInteractive(this.statisticsIcon); 
 	}
 
 	openMap () {
@@ -150,9 +152,6 @@ class PhoneScene extends Phaser.Scene {
 			receptionIcon.on('pointerdown', () => this.scene.start('Reception'));
 		}
 
-		// Conference room is always locked (not implemented)
-		this.lockRoomOnMap(x2, y2);
-
 		// Training room is only unlocked after completing first objective
 		const trainingRoomIcon = this.add.image(x2, y1, 'trainingRoomIcon');
 		trainingRoomIcon.setScale(0.071);
@@ -167,18 +166,32 @@ class PhoneScene extends Phaser.Scene {
 			this.lockRoomOnMap(x2, y1);
 		}
 
-		// Meeting room is only unlocked after completing second objective
-		const meetingRoomIcon = this.add.image(x1, y2, 'meetingRoomIcon');
-		meetingRoomIcon.setScale(0.078);
+		// Adas office is only unlocked after completing second objective
+		const officeRoom = this.add.image(x1, y2, 'officeRoomIcon');
+		officeRoom.setScale(0.078);
 		if (currentObjective > 2) {
-			meetingRoomIcon.setInteractive({ useHandCursor: true });
+			officeRoom.setInteractive({ useHandCursor: true });
 			if (this.prevScene == 'Meeting') {
-				meetingRoomIcon.on('pointerdown', () => this.closePhone());
+				officeRoom.on('pointerdown', () => this.closePhone());
 			} else {
-				meetingRoomIcon.on('pointerdown', () => this.scene.start('Meeting'));
+				officeRoom.on('pointerdown', () => this.scene.start('Meeting'));
 			}
 		} else {
 			this.lockRoomOnMap(x1, y2);
+		}
+
+		// Lunch room is only unlocked after completing second objective
+		const lunchRoom = this.add.image(x2, y2, 'lunchRoomIcon');
+		lunchRoom.setScale(0.078);
+		if (currentObjective > 2) {
+			lunchRoom.setInteractive({ useHandCursor: true });
+			if (this.prevScene == 'Lunch') {
+				lunchRoom.on('pointerdown', () => this.closePhone());
+			} else {
+				lunchRoom.on('pointerdown', () => this.scene.start('Lunch'));
+			}
+		} else {
+			this.lockRoomOnMap(x2, y2);
 		}
 	}
 
@@ -237,22 +250,20 @@ class PhoneScene extends Phaser.Scene {
 		}
 	}
 
-	openMessage () {
-		this.currentScreen = 'message';
+	openStatistics () {
+		// Add background
+		const statisticsScreen = this.add.image(this.config.width/2, this.config.height/2, 'statisticsScreen');
+		statisticsScreen.setScale(.9);
 		this.toggleHomeScreenIcon();
+
+		const statistics = this.player['statistics'];
+		Object.keys(statistics).forEach((level) => {
+			this.add.text(480, 140 + 85 * level, 'Attempts:', { fontFamily: 'Myriad Pro', fontSize: '25px', color: 'white', align: 'center', wordWrap: { width: 175, useAdvanceWrap: true }});
+			this.add.text(570, 140 + 85 * level, statistics[level]['attempts'], { fontFamily: 'Myriad Pro', fontSize: '25px', color: 'white', align: 'center', wordWrap: { width: 175, useAdvanceWrap: true }});
+			this.add.text(480, 170 + 85 * level, 'Time:', { fontFamily: 'Myriad Pro', fontSize: '25px', color: 'white', align: 'center', wordWrap: { width: 175, useAdvanceWrap: true }});
+			this.add.text(540, 170 + 85 * level, statistics[level]['time'], { fontFamily: 'Myriad Pro', fontSize: '25px', color: 'white', align: 'center', wordWrap: { width: 175, useAdvanceWrap: true }});
+		});
 	}
-/*
-	returnHome () {
-		 // Does nothing if clicking home button while on home
-		if (this.currentScreen != 'home') { // Otherwise, toggle buttons
-			this.currentScreen = 'home';
-			this.scene.restart(); 
-			const phoneScreen = this.add.image(this.config.width/2, this.config.height/2, 'phoneScreen');
-			phoneScreen.setScale(.9);
-			this.toggleHomeScreenIcon(); // Enable buttons on home screen again
-			
-		}
-	}*/
 
 	toggleInteractive (object) {
 		if (object.input.enabled) {

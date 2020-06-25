@@ -10,7 +10,7 @@ class CaseDescriptionScene extends Phaser.Scene {
         this.caseDescriptionFramework = [
             'Introduction to the company',
             'The cause of the project',
-            'The character and their role',
+            'Role in project',
             'Project description',
             'Case description'
         ];
@@ -93,15 +93,14 @@ class CaseDescriptionScene extends Phaser.Scene {
                 this.startDisplay(descriptionNum + 1, descriptions);
             }, this);            
         } else {
-            // Finish reading the case and start with the questions
+            // Finish reading the case and go back to meeting room
             const completeButton = this.add.image(750, 430, 'greyTrainButton');
             container.add(completeButton);
-            container.add(this.add.text(690, 415, 'TO QUESTIONS', { fontFamily: 'Myriad Pro', fontSize: '30px', color: '#ffffff'}));
+            container.add(this.add.text(720, 415, 'FINISH', { fontFamily: 'Myriad Pro', fontSize: '30px', color: '#ffffff'}));
             completeButton.setScale(.75);
             completeButton.setInteractive({ useHandCursor: true });
             completeButton.on('pointerdown', function () { 
-                container.destroy();
-                this.scene.start('CaseQuestion');
+                this.scene.start('Meeting');
             }, this); 
         }
         if (descriptionNum > 1) {
