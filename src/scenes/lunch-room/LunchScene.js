@@ -16,6 +16,7 @@ class LunchScene extends Phaser.Scene {
         this.load.image('ada', './src/assets/lady-and-coffee.png');
         this.load.image('phoneIcon', './src/assets/phone-icon.png');
         this.load.image('phoneScreen', './src/assets/phone-screen.png');
+        this.load.image('framedDialogueBox', './src/assets/framed-dialogue-box.png');
     }
 
     create () {
@@ -25,7 +26,14 @@ class LunchScene extends Phaser.Scene {
         // Scale the background img to fit the height of the game height
         bg.displayHeight = config.height;
         bg.scaleX = bg.scaleY;
+
+        const dialogueBox = this.add.image(640, 270, 'framedDialogueBox');
+        dialogueBox.setScale(0.8);
+        dialogueBox.setInteractive({ useHandCursor: true });  // Cursor style change when hovering 
+        dialogueBox.on('pointerdown', () => this.scene.start('LunchDialogue'));
+        this.add.text(620, 250, 'Hey!', { fontFamily: 'Myriad Pro', fontSize: '22px', color: '#4D4D4D', align: 'left', wordWrap: { width: 190, useAdvancedWrap: true }})
         
+
         // Render ada only if we have not finished all dialogues
         if (this.player['adaDialogue'] != 36) {
             const ada = this.add.image(520, 440, 'ada').setScale(.8).setInteractive({ useHandCursor: true });
