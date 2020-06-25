@@ -181,6 +181,15 @@ class TestScene3 extends Phaser.Scene {
         }, this);
     }
 
+    updatePlayerStatistics () {
+        var currentAttempts = this.player['statistics'][1]['attempts'];
+        var newAttempts = this.attemptNumber.toString();
+        var newTime = this.currentTimer ? this.currentTimer.toString() : "None";
+        if (currentAttempts == 0 || newAttempts < currentAttempts) {
+            this.player['statistics'][1]['attempts'] = newAttempts;
+            this.player['statistics'][1]['time'] = newTime;
+        }
+    }
     
     clearLevel () {
         const container = this.add.container(0, 0);
@@ -197,6 +206,7 @@ class TestScene3 extends Phaser.Scene {
         container.add(this.add.text(700, 120, 'Attempt number: ', { fontFamily: 'Myriad Pro', fontSize: '30px', color: '#4D4D4D'} ));
         container.add(this.add.text(880, 120, this.attemptNumber, { fontFamily: 'Myriad Pro', fontSize: '30px', color: '#4D4D4D'} ));
 
+        this.updatePlayerStatistics();
         // Check if correct answer
         const correctAnswer = [
             'Any action a company undertakes that involves processing personal data must be done with data protection and privacy in mind at every step.', 

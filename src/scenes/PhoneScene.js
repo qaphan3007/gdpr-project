@@ -27,6 +27,8 @@ class PhoneScene extends Phaser.Scene {
 		this.load.image('achievementIcon', './src/assets/achievement-icon.png');
 		this.load.image('achievementScreen', './src/assets/achievement-screen.png');
 		this.load.image('achievementTrophy', './src/assets/trophy.png');
+		this.load.image('statisticsIcon', './src/assets/statistics-icon.png');
+		this.load.image('statisticsScreen', './src/assets/statistics-screen.png');
 		this.load.image('mapIcon', './src/assets/map-icon.png');
 		this.load.image('mapScreen', './src/assets/map-screen.png');
 		this.load.image('receptionIcon', './src/assets/reception-icon.png'); // Phone icons
@@ -76,6 +78,11 @@ class PhoneScene extends Phaser.Scene {
 		this.achievementIcon.setInteractive({ useHandCursor: true });
 		this.achievementIcon.on('pointerdown', () => this.openAchievement()); 
 
+		// Place the statistics icon where it is on the phone
+		this.statisticsIcon = this.add.image(618, 180, 'statisticsIcon');
+		this.statisticsIcon.setInteractive({ useHandCursor: true });
+		this.statisticsIcon.on('pointerdown', () => this.openStatistics()); 
+		
 		// Place notification circle if there is unseen objective
 		if (this.player['newObjective']) {
 			this.newObjectiveNotif = this.add.circle(463, 159, 7, 0xFD1818);
@@ -120,6 +127,7 @@ class PhoneScene extends Phaser.Scene {
 		this.toggleInteractive(this.mapIcon); // Turn off inputs from buttons on home screen
 		this.toggleInteractive(this.objectiveIcon); 
 		this.toggleInteractive(this.achievementIcon); 
+		this.toggleInteractive(this.statisticsIcon); 
 	}
 
 	openMap () {
@@ -240,6 +248,21 @@ class PhoneScene extends Phaser.Scene {
 			this.newObjectiveNotif.visible = false;
 			this.player['newObjective'] = false;
 		}
+	}
+
+	openStatistics () {
+		// Add background
+		const statisticsScreen = this.add.image(this.config.width/2, this.config.height/2, 'statisticsScreen');
+		statisticsScreen.setScale(.9);
+		this.toggleHomeScreenIcon();
+
+		const statistics = this.player['statistics'];
+		Object.keys(statistics).forEach((level) => {
+			this.add.text(480, 140 + 85 * level, 'Attempts:', { fontFamily: 'Myriad Pro', fontSize: '25px', color: 'white', align: 'center', wordWrap: { width: 175, useAdvanceWrap: true }});
+			this.add.text(570, 140 + 85 * level, statistics[level]['attempts'], { fontFamily: 'Myriad Pro', fontSize: '25px', color: 'white', align: 'center', wordWrap: { width: 175, useAdvanceWrap: true }});
+			this.add.text(480, 170 + 85 * level, 'Time:', { fontFamily: 'Myriad Pro', fontSize: '25px', color: 'white', align: 'center', wordWrap: { width: 175, useAdvanceWrap: true }});
+			this.add.text(540, 170 + 85 * level, statistics[level]['time'], { fontFamily: 'Myriad Pro', fontSize: '25px', color: 'white', align: 'center', wordWrap: { width: 175, useAdvanceWrap: true }});
+		});
 	}
 
 	toggleInteractive (object) {

@@ -187,6 +187,15 @@ class TestScene2 extends Phaser.Scene {
         }, this);
     }
 
+    updatePlayerStatistics () {
+        var currentAttempts = this.player['statistics'][1]['attempts'];
+        var newAttempts = this.attemptNumber.toString();
+        var newTime = this.currentTimer ? this.currentTimer.toString() : "None";
+        if (currentAttempts == 0 || newAttempts < currentAttempts) {
+            this.player['statistics'][1]['attempts'] = newAttempts;
+            this.player['statistics'][1]['time'] = newTime;
+        }
+    }
     
     clearLevel () {
         const container = this.add.container(0, 0);
@@ -202,6 +211,7 @@ class TestScene2 extends Phaser.Scene {
         
         container.add(this.add.text(700, 120, 'Attempt number: ', { fontFamily: 'Myriad Pro', fontSize: '30px', color: '#4D4D4D'} ));
         container.add(this.add.text(880, 120, this.attemptNumber, { fontFamily: 'Myriad Pro', fontSize: '30px', color: '#4D4D4D'} ));
+        this.updatePlayerStatistics();
 
         // Check if correct answer
         const correctAnswer = ['Store accurate and up-to-date data.', 'Retain the data for a necessary limited period and then erase.']
@@ -227,7 +237,7 @@ class TestScene2 extends Phaser.Scene {
 
         // If all answers correct, go to next level
         if (correctCount == correctMax) {
-            container.add(this.add.text(100, 380, 'You have completed this level!', { fontFamily: 'Myriad Pro', fontSize: '30px', color: '#4D4D4D'} ));
+            container.add(this.add.text(100, 380, 'You have completed this level! The training statistics on your phone has been updated.', { fontFamily: 'Myriad Pro', fontSize: '30px', color: '#4D4D4D'} ));
             
             if (this.difficulty == 'Easy' && ! this.player['achievements'].includes(1)) {
                 this.player['achievements'].push(1);

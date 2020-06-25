@@ -69,7 +69,21 @@ class Game extends Phaser.Game {
 			objective: 1,
 			case: 1,
 			newObjective: true,
-			newAchievement: false
+			newAchievement: false,
+			statistics: {
+				1: {
+					attempts: "0",
+					time: "None"
+				},
+				2: {
+					attempts: "0",
+					time: "None"
+				},
+				3: {
+					attempts: "0",
+					time: "None"
+				},
+			}
 		}
 
 		// An object containing all learning content. Used to prevent multiple readings from the DB
