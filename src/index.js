@@ -41,7 +41,7 @@ class Game extends Phaser.Game {
 		this.scene.add('Conference', ConferenceScene);
 
 		// Initialize the game on the first scene
-		this.scene.start('Reception');
+		this.scene.start('Lunch');
 
 		// Initialize the database
 		const firebaseApp = firebase.initializeApp(firebaseConfig);

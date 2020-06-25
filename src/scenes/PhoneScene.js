@@ -34,7 +34,7 @@ class PhoneScene extends Phaser.Scene {
 		this.load.image('receptionIcon', './src/assets/reception-icon.png'); // Phone icons
 		this.load.image('trainingRoomIcon', './src/assets/training-room-icon.png');
 		this.load.image('officeRoomIcon', './src/assets/meeting-room-icon.png');
-		this.load.image('lunchRoomIcon', './src/assets/meeting-room-icon.png');
+		this.load.image('lunchRoomIcon', './src/assets/lunch-room.png');
 		this.load.image('lockRoomIcon', './src/assets/lock-room-icon.png');
 		this.load.image('closePhone', './src/assets/close-phone.png')
 	}
@@ -90,7 +90,6 @@ class PhoneScene extends Phaser.Scene {
 		if (this.player['newAchievement']) {
 			this.newAchievementNotif = this.add.circle(583, 159, 7, 0xFD1818);
 		}
-
 	}	
 	
 	async getAchievementsFromDB () {
@@ -182,7 +181,7 @@ class PhoneScene extends Phaser.Scene {
 
 		// Lunch room is only unlocked after completing second objective
 		const lunchRoom = this.add.image(x2, y2, 'lunchRoomIcon');
-		lunchRoom.setScale(0.078);
+		lunchRoom.setScale(0.074);
 		if (currentObjective > 2) {
 			lunchRoom.setInteractive({ useHandCursor: true });
 			if (this.prevScene == 'Lunch') {
