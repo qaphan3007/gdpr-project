@@ -16,6 +16,7 @@ import LearnScene from './scenes/training-room/LearnScene';
 import LunchScene from './scenes/lunch-room/LunchScene';
 import LunchDialogue from './scenes/lunch-room/LunchDialogue';
 import MeetingRoomScene from './scenes/meeting-room/MeetingRoomScene';
+import MeetingRoomDialogue from './scenes/meeting-room/MeetingRoomDialogue';
 import CaseDescriptionScene from './scenes/meeting-room/CaseDescriptionScene';
 import CaseQuestionScene from './scenes/meeting-room/CaseQuestionScene';
 import ConferenceScene from './scenes/conference-room/ConferenceScene';
@@ -36,12 +37,13 @@ class Game extends Phaser.Game {
 		this.scene.add('Lunch', LunchScene);
 		this.scene.add('LunchDialogue', LunchDialogue);
 		this.scene.add('Meeting', MeetingRoomScene);
+		this.scene.add('MeetingDialogue', MeetingRoomDialogue);
 		this.scene.add('CaseDescription', CaseDescriptionScene);
 		this.scene.add('CaseQuestion', CaseQuestionScene);
 		this.scene.add('Conference', ConferenceScene);
 
 		// Initialize the game on the first scene
-		this.scene.start('Lunch');
+		this.scene.start('Reception');
 
 		// Initialize the database
 		const firebaseApp = firebase.initializeApp(firebaseConfig);
@@ -75,6 +77,7 @@ class Game extends Phaser.Game {
 			newObjective: true,
 			newAchievement: false,
 			adaDialogue: 1,
+			billDialogue: 1,
 			statistics: {
 				1: {
 					attempts: "0",

@@ -7,6 +7,7 @@ class LunchDialogue extends Phaser.Scene {
 
     init () { 
         this.player = this.sys.game.player; 
+        // Ada's progress is updated at four points: 5, 17, 24, 36
         this.nextDialogue = this.player['adaDialogue']; // Default dialogue progress is 1
         this.savePoint = 1;
         this.dialogues = {
@@ -73,8 +74,8 @@ class LunchDialogue extends Phaser.Scene {
     
     preload () {
         this.load.image('lunchRoom', './src/assets/faded-lunch-room.png');
-        this.load.image('portrait', './src/assets/ada-portrait.png');
-        this.load.image('nameBox', './src/assets/ada-nameBox.png')
+        this.load.image('adaPortrait', './src/assets/ada-portrait.png');
+        this.load.image('adaNameBox', './src/assets/ada-nameBox.png')
     }
 
     create () {
@@ -85,13 +86,13 @@ class LunchDialogue extends Phaser.Scene {
         bg.scaleX = bg.scaleY;
 
         // Render potrait and dialogue box
-        this.add.image(180, 230, 'portrait').setScale(.6);
+        this.add.image(180, 230, 'adaPortrait').setScale(.6);
 
         this.dialogueBox = this.add.rectangle(config.width/2, 4*config.height/5, 1000, 200, 0xF2F2F2).setStrokeStyle(1, 0x4D4D4D);
         this.dialogueBox.setInteractive({ useHandCursor: true });
         this.dialogueBox.on('pointerdown', () => this.setDialogue(this.nextDialogue));
         
-        this.add.image(180, 380, 'nameBox').setScale(.75);
+        this.add.image(180, 380, 'adaNameBox').setScale(.75);
 
         this.currentDialogue = this.add.text(90, 420, this.dialogues[this.nextDialogue], { lineSpacing: '10', fontFamily: 'Myriad Pro', fontSize: '30px', color: '#4D4D4D',  align: 'left', wordWrap: { width: 930, useAdvancedWrap: true }});
         
@@ -180,11 +181,7 @@ class LunchDialogue extends Phaser.Scene {
     }
 
     setDialogue (ID) {
-        console.log('ID: '+ ID);
-        if (ID == 0) {  // No more text to be rendered as the player is leaving the dialogue
-            this.player['adaDialogue'] = this.savePoint;  // Player resumes from next dialogue when they return
-            this.scene.start('Lunch');
-        } else if (ID == 1) {
+        if (ID == 1) {
             this.showChoice('1-1', 3, '1-2', 2);
         } else if (ID == 2) {
             this.showChoice('2-1', 3, '');
