@@ -43,7 +43,7 @@ class LunchDialogue extends Phaser.Scene {
             31: 'Next question: If we include this “Location History” setting so the user can toggle between enabling and disabling it, what do you think the default value of it should be?',
             32: 'That doesn’t sound right. Collecting data of the users may be beneficial for them as it provides better user experience during app use. But according to GDPR, privacy should be protected by default. The user should not need to do anything extra to protect their privacy.',
             33: 'That sounds right. According to the GDPR, privacy should be set by default. Having the setting off in default will protect the privacy of the user, and complies with GDPR.',
-            34: 'Hmm, I think that was all the concern I had for now. Thank you for talking to me; it helped me to reflect over the problem better. I better finish my lunch and then continue to work now.',
+            34: 'Hmm, I think that was all the concerns I had for now. Thank you for talking to me; it helped me to reflect over the problem better. I better finish my lunch and then continue to work now.',
             35: 'Feel free to talk to me again if you have any questions. The case file will always be available in my office if you wish to review it, just ask my assistant Bill! See you around!'
         }
         this.choices = {
@@ -137,6 +137,7 @@ class LunchDialogue extends Phaser.Scene {
         if (option3text != '') {
             this.option1.setY(50);
             this.option2.setY(180);
+            this.option2.setVisible(true);
             this.option3.setVisible(true);
             this.option3.setText(this.choices[option3text]); 
             this.option3.on('pointerdown', () => {
@@ -150,6 +151,7 @@ class LunchDialogue extends Phaser.Scene {
         else if (option2text == '') {
             this.option1.setY(200);  
             this.option2.setVisible(false);
+            this.option3.setVisible(false);
         } 
          // By default there are 2 options
         else { 
@@ -240,8 +242,8 @@ class LunchDialogue extends Phaser.Scene {
         } else if (ID == 22) {
             this.showChoice('22-1', 25, '22-2', 23); 
         } else if (ID == 23) {
-            this.savePoint = 24;
-            this.nextDialogue = 0; 
+            this.player['adaDialogue'] = 24;  // Player resumes from next dialogue when they return
+            this.scene.start('Lunch');
         } else if (ID == 24) {  
             this.showChoice('24-1', 25, ''); 
         } else if (ID == 25) {  
