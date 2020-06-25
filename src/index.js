@@ -13,6 +13,8 @@ import TestScene from './scenes/training-room/TestScene';
 import TestScene2 from './scenes/training-room/TestScene2';
 import TestScene3 from './scenes/training-room/TestScene3';
 import LearnScene from './scenes/training-room/LearnScene';
+import LunchScene from './scenes/lunch-room/LunchScene';
+import LunchDialogue from './scenes/lunch-room/LunchDialogue';
 import MeetingRoomScene from './scenes/meeting-room/MeetingRoomScene';
 import CaseDescriptionScene from './scenes/meeting-room/CaseDescriptionScene';
 import CaseQuestionScene from './scenes/meeting-room/CaseQuestionScene';
@@ -30,12 +32,14 @@ class Game extends Phaser.Game {
 		this.scene.add('TestLevel2', TestScene2)
 		this.scene.add('TestLevel3', TestScene3)
 		this.scene.add('Learning', LearnScene);
+		this.scene.add('Lunch', LunchScene);
+		this.scene.add('LunchDialogue', LunchDialogue);
 		this.scene.add('Meeting', MeetingRoomScene);
 		this.scene.add('CaseDescription', CaseDescriptionScene);
 		this.scene.add('CaseQuestion', CaseQuestionScene);
 
 		// Initialize the game on the first scene
-		this.scene.start('Reception');
+		this.scene.start('LunchDialogue');
 
 		// Initialize the database
 		const firebaseApp = firebase.initializeApp(firebaseConfig);
@@ -67,7 +71,8 @@ class Game extends Phaser.Game {
 			objective: 1,
 			case: 1,
 			newObjective: true,
-			newAchievement: false
+			newAchievement: false,
+			adaDialogue: 1
 		}
 
 		// An object containing all learning content. Used to prevent multiple readings from the DB
