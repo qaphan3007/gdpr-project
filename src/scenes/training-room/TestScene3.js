@@ -8,6 +8,7 @@ class TestScene3 extends Phaser.Scene {
     init () {
         this.currentAnswer = [];
         this.player = this.sys.game.player;
+        this.attemptNumber = 1;
     }
  
     preload () {
@@ -182,12 +183,19 @@ class TestScene3 extends Phaser.Scene {
 
     
     clearLevel () {
+        const container = this.add.container(0, 0);
+        
         // Destroy timer
         if (this.difficulty == 'Hard') {
+            container.add(this.add.text(700, 180, 'Time left: ', { fontFamily: 'Myriad Pro', fontSize: '30px', color: '#4D4D4D'} ));
+            container.add(this.add.text(810, 180, this.currentTimer, { fontFamily: 'Myriad Pro', fontSize: '30px', color: '#4D4D4D'} ));
             this.timedEvent.remove();
             this.timerCircle.destroy();
             this.displayTime.destroy();
         }
+        
+        container.add(this.add.text(700, 120, 'Attempt number: ', { fontFamily: 'Myriad Pro', fontSize: '30px', color: '#4D4D4D'} ));
+        container.add(this.add.text(880, 120, this.attemptNumber, { fontFamily: 'Myriad Pro', fontSize: '30px', color: '#4D4D4D'} ));
 
         // Check if correct answer
         const correctAnswer = [
@@ -197,7 +205,6 @@ class TestScene3 extends Phaser.Scene {
         var correctCount = 0;
         const correctMax = correctAnswer.length;
 
-        const container = this.add.container(0, 0);
         container.add(this.add.text(430, 35, 'RESULTS', { fontFamily: 'Myriad Pro Bold', fontSize: '38px', color: '#4D4D4D'} ));
         container.add(this.add.text(100, 120, 'Question 1:', { fontFamily: 'Myriad Pro', fontSize: '30px', color: '#4D4D4D'} ));
         
@@ -207,7 +214,7 @@ class TestScene3 extends Phaser.Scene {
         } else {
             container.add(this.add.text(240, 120, 'Incorrect', { fontFamily: 'Myriad Pro', fontSize: '30px', color: '#DC143C'} ));
         }
-        container.add(this.add.text(100, 180, 'Question 2', { fontFamily: 'Myriad Pro', fontSize: '30px', color: '#4D4D4D'} ));
+        container.add(this.add.text(100, 180, 'Question 2:', { fontFamily: 'Myriad Pro', fontSize: '30px', color: '#4D4D4D'} ));
         if (this.currentAnswer[1] == correctAnswer[1]) {
             correctCount += 1;
             container.add(this.add.text(240, 180, 'Correct', { fontFamily: 'Myriad Pro', fontSize: '30px', color: '#32CD32'} ));
@@ -217,7 +224,7 @@ class TestScene3 extends Phaser.Scene {
 
         // If all answers correct, finish demo
         if (correctCount == correctMax) {
-            container.add(this.add.text(120, 380, 'Congratulations! You have completed all the levels for this demo.', { fontFamily: 'Myriad Pro', fontSize: '30px', color: '#4D4D4D'} ));
+            container.add(this.add.text(100, 380, 'Congratulations! You have completed all the levels for this demo.', { fontFamily: 'Myriad Pro', fontSize: '30px', color: '#4D4D4D'} ));
             
             if (this.difficulty == 'Easy' && ! this.player['achievements'].includes(1)) {
                 this.player['achievements'].push(1);
@@ -241,7 +248,8 @@ class TestScene3 extends Phaser.Scene {
                 this.scene.start('Reception');
             });
         } else {  // Retry the level if not all answers are correct.
-            container.add(this.add.text(120, 380, 'You need to answer all questions correctly to pass the level.', { fontFamily: 'Myriad Pro', fontSize: '30px', color: '#4D4D4D'} ));
+            this.attemptNumber += 1;
+            container.add(this.add.text(100, 380, 'You need to answer all questions correctly to pass the level.', { fontFamily: 'Myriad Pro', fontSize: '30px', color: '#4D4D4D'} ));
 
             const retryButton = this.add.image(500, 500, 'greyTrainButton');
             container.add(retryButton);
