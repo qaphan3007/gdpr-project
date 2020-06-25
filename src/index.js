@@ -16,6 +16,7 @@ import LearnScene from './scenes/training-room/LearnScene';
 import MeetingRoomScene from './scenes/meeting-room/MeetingRoomScene';
 import CaseDescriptionScene from './scenes/meeting-room/CaseDescriptionScene';
 import CaseQuestionScene from './scenes/meeting-room/CaseQuestionScene';
+import ConferenceScene from './scenes/conference-room/ConferenceScene';
 
 class Game extends Phaser.Game {
 	constructor () {
@@ -33,6 +34,7 @@ class Game extends Phaser.Game {
 		this.scene.add('Meeting', MeetingRoomScene);
 		this.scene.add('CaseDescription', CaseDescriptionScene);
 		this.scene.add('CaseQuestion', CaseQuestionScene);
+		this.scene.add('Conference', ConferenceScene);
 
 		// Initialize the game on the first scene
 		this.scene.start('Reception');

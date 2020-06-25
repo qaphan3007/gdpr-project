@@ -150,9 +150,6 @@ class PhoneScene extends Phaser.Scene {
 			receptionIcon.on('pointerdown', () => this.scene.start('Reception'));
 		}
 
-		// Conference room is always locked (not implemented)
-		this.lockRoomOnMap(x2, y2);
-
 		// Training room is only unlocked after completing first objective
 		const trainingRoomIcon = this.add.image(x2, y1, 'trainingRoomIcon');
 		trainingRoomIcon.setScale(0.071);
@@ -167,18 +164,32 @@ class PhoneScene extends Phaser.Scene {
 			this.lockRoomOnMap(x2, y1);
 		}
 
-		// Meeting room is only unlocked after completing second objective
-		const meetingRoomIcon = this.add.image(x1, y2, 'meetingRoomIcon');
-		meetingRoomIcon.setScale(0.078);
+		// Adas office is only unlocked after completing second objective
+		const officeRoom = this.add.image(x1, y2, 'meetingRoomIcon');
+		officeRoom.setScale(0.078);
 		if (currentObjective > 2) {
-			meetingRoomIcon.setInteractive({ useHandCursor: true });
+			officeRoom.setInteractive({ useHandCursor: true });
 			if (this.prevScene == 'Meeting') {
-				meetingRoomIcon.on('pointerdown', () => this.closePhone());
+				officeRoom.on('pointerdown', () => this.closePhone());
 			} else {
-				meetingRoomIcon.on('pointerdown', () => this.scene.start('Meeting'));
+				officeRoom.on('pointerdown', () => this.scene.start('Meeting'));
 			}
 		} else {
 			this.lockRoomOnMap(x1, y2);
+		}
+
+		// Conference room is only unlocked after completing third objective
+		const conferenceRoom = this.add.image(x2, y2, 'meetingRoomIcon');
+		conferenceRoom.setScale(0.078);
+		if (currentObjective > 3) {
+			conferenceRoom.setInteractive({ useHandCursor: true });
+			if (this.prevScene == 'Conference') {
+				conferenceRoom.on('pointerdown', () => this.closePhone());
+			} else {
+				conferenceRoom.on('pointerdown', () => this.scene.start('Conference'));
+			}
+		} else {
+			this.lockRoomOnMap(x2, y2);
 		}
 	}
 
@@ -241,18 +252,6 @@ class PhoneScene extends Phaser.Scene {
 		this.currentScreen = 'message';
 		this.toggleHomeScreenIcon();
 	}
-/*
-	returnHome () {
-		 // Does nothing if clicking home button while on home
-		if (this.currentScreen != 'home') { // Otherwise, toggle buttons
-			this.currentScreen = 'home';
-			this.scene.restart(); 
-			const phoneScreen = this.add.image(this.config.width/2, this.config.height/2, 'phoneScreen');
-			phoneScreen.setScale(.9);
-			this.toggleHomeScreenIcon(); // Enable buttons on home screen again
-			
-		}
-	}*/
 
 	toggleInteractive (object) {
 		if (object.input.enabled) {

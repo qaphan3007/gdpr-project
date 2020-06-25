@@ -32,10 +32,10 @@ class MeetingRoomScene extends Phaser.Scene {
         bg.y = config.height/2;
         bg.x = config.width/2;
 
-        // Add NPC and speech
-        const dialogueBox = this.add.image(700, 200, 'framedDialogueBox');
-        dialogueBox.setScale(1.4);
-        const dialogueText = this.add.text(618, 165, 'Welcome! Press on me to start solving cases.', { fontFamily: 'Myriad Pro', fontSize: '22px', color: '#4D4D4D', align: 'left', wordWrap: { width: 190, useAdvancedWrap: true }})
+        // Add assistant NPC and speech
+        const dialogueBox = this.add.image(670, 200, 'framedDialogueBox');
+        dialogueBox.setScale(0.8);
+        const dialogueText = this.add.text(648, 183, 'Hello!', { fontFamily: 'Myriad Pro', fontSize: '22px', color: '#4D4D4D', align: 'left', wordWrap: { width: 190, useAdvancedWrap: true }})
         const npc = this.add.image(540, 420, 'npc');
         npc.setScale(1.4);
         npc.setInteractive({ useHandCursor: true });  
@@ -68,12 +68,13 @@ class MeetingRoomScene extends Phaser.Scene {
         closeMeetingButton.on('pointerdown', () => this.scene.start('Meeting')); 
 
         const container = this.add.container(0, 0);
-        const text = 'Welcome to the meeting room! Here you can learn about practical uses of GDPR by solving cases. While the characters in these cases are fictional, the cases are inspired by situations related to GDPR in the real world! Press on the button below to start reading a case. You will be asked a series of questions at the end. Remember: GDPR compliance is the key!';
+        // const text = 'Welcome to the meeting room! Here you can learn about practical uses of GDPR by solving cases. While the characters in these cases are fictional, the cases are inspired by situations related to GDPR in the real world! Press on the button below to start reading a case. You will be asked a series of questions at the end. Remember: GDPR compliance is the key!';
+        const text = 'Welcome! Here you can read about the case that Ada needed help on. Press on the button below to start reading the case.';
         container.add(this.add.text(100, 140, text, { fontFamily: 'Myriad Pro', fontSize: '38px', color: '#4D4D4D', align: 'left', wordWrap: { width: 860, useAdvanceWrap: true }}));
         
         const startButton = this.add.image(525, 430, 'greyTrainButton');
         container.add(startButton);
-        container.add(this.add.text(500, 415, 'START', { fontFamily: 'Myriad Pro', fontSize: '30px', color: '#ffffff'}));
+        container.add(this.add.text(500, 415, 'READ', { fontFamily: 'Myriad Pro', fontSize: '30px', color: '#ffffff'}));
         startButton.setScale(.75);
         startButton.setInteractive({ useHandCursor: true });
         startButton.on('pointerdown', function () {
