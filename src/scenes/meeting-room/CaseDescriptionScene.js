@@ -10,7 +10,7 @@ class CaseDescriptionScene extends Phaser.Scene {
         this.caseDescriptionFramework = [
             'Introduction to the company',
             'The cause of the project',
-            'The character and their role',
+            'Role in project',
             'Project description',
             'Case description'
         ];

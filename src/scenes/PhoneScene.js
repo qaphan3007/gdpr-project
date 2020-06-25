@@ -29,10 +29,10 @@ class PhoneScene extends Phaser.Scene {
 		this.load.image('achievementTrophy', './src/assets/trophy.png');
 		this.load.image('mapIcon', './src/assets/map-icon.png');
 		this.load.image('mapScreen', './src/assets/map-screen.png');
-		this.load.image('messageIcon', './src/assets/message-icon.png');
 		this.load.image('receptionIcon', './src/assets/reception-icon.png'); // Phone icons
 		this.load.image('trainingRoomIcon', './src/assets/training-room-icon.png');
-		this.load.image('meetingRoomIcon', './src/assets/meeting-room-icon.png');
+		this.load.image('officeRoomIcon', './src/assets/meeting-room-icon.png');
+		this.load.image('lunchRoomIcon', './src/assets/meeting-room-icon.png');
 		this.load.image('lockRoomIcon', './src/assets/lock-room-icon.png');
 		this.load.image('closePhone', './src/assets/close-phone.png')
 	}
@@ -75,11 +75,6 @@ class PhoneScene extends Phaser.Scene {
 		this.achievementIcon = this.add.image(562, 180, 'achievementIcon');
 		this.achievementIcon.setInteractive({ useHandCursor: true });
 		this.achievementIcon.on('pointerdown', () => this.openAchievement()); 
-		
-		// Place the message icon where it is on the phone
-		this.messageIcon = this.add.image(618, 180, 'messageIcon');
-		this.messageIcon.setInteractive({ useHandCursor: true });
-		this.messageIcon.on('pointerdown', () => this.openMessage()); 
 
 		// Place notification circle if there is unseen objective
 		if (this.player['newObjective']) {
@@ -125,7 +120,6 @@ class PhoneScene extends Phaser.Scene {
 		this.toggleInteractive(this.mapIcon); // Turn off inputs from buttons on home screen
 		this.toggleInteractive(this.objectiveIcon); 
 		this.toggleInteractive(this.achievementIcon); 
-		this.toggleInteractive(this.messageIcon); 
 	}
 
 	openMap () {
@@ -165,7 +159,7 @@ class PhoneScene extends Phaser.Scene {
 		}
 
 		// Adas office is only unlocked after completing second objective
-		const officeRoom = this.add.image(x1, y2, 'meetingRoomIcon');
+		const officeRoom = this.add.image(x1, y2, 'officeRoomIcon');
 		officeRoom.setScale(0.078);
 		if (currentObjective > 2) {
 			officeRoom.setInteractive({ useHandCursor: true });
@@ -178,15 +172,15 @@ class PhoneScene extends Phaser.Scene {
 			this.lockRoomOnMap(x1, y2);
 		}
 
-		// Conference room is only unlocked after completing third objective
-		const conferenceRoom = this.add.image(x2, y2, 'meetingRoomIcon');
-		conferenceRoom.setScale(0.078);
-		if (currentObjective > 3) {
-			conferenceRoom.setInteractive({ useHandCursor: true });
-			if (this.prevScene == 'Conference') {
-				conferenceRoom.on('pointerdown', () => this.closePhone());
+		// Lunch room is only unlocked after completing second objective
+		const lunchRoom = this.add.image(x2, y2, 'lunchRoomIcon');
+		lunchRoom.setScale(0.078);
+		if (currentObjective > 2) {
+			lunchRoom.setInteractive({ useHandCursor: true });
+			if (this.prevScene == 'Lunch') {
+				lunchRoom.on('pointerdown', () => this.closePhone());
 			} else {
-				conferenceRoom.on('pointerdown', () => this.scene.start('Conference'));
+				lunchRoom.on('pointerdown', () => this.scene.start('Lunch'));
 			}
 		} else {
 			this.lockRoomOnMap(x2, y2);
@@ -246,11 +240,6 @@ class PhoneScene extends Phaser.Scene {
 			this.newObjectiveNotif.visible = false;
 			this.player['newObjective'] = false;
 		}
-	}
-
-	openMessage () {
-		this.currentScreen = 'message';
-		this.toggleHomeScreenIcon();
 	}
 
 	toggleInteractive (object) {
