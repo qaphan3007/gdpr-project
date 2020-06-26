@@ -278,6 +278,7 @@ class LunchDialogue extends Phaser.Scene {
         } else if (ID == 35) {
             this.player['adaDialogue'] = 36;  // 36 marks the end of the lunch convo
             this.scene.start('Lunch');
+            this.player['objective'] += 1;
         }
     }
 }
