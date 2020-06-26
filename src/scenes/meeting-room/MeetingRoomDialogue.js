@@ -62,7 +62,8 @@ class MeetingRoomDialogue extends Phaser.Scene {
     preload () {
         this.load.image('meetingRoom', './src/assets/faded-meeting-room.png');
         this.load.image('billPortrait', './src/assets/bill-portrait.png');
-        this.load.image('billNameBox', './src/assets/bill-nameBox.png')
+        this.load.image('billNameBox', './src/assets/bill-nameBox.png');
+        this.load.image('handPointer', './src/assets/hand-pointer.png');
     }
 
     create () {
@@ -79,6 +80,10 @@ class MeetingRoomDialogue extends Phaser.Scene {
         this.dialogueBox = this.add.rectangle(config.width/2, 4*config.height/5, 1000, 200, 0xF2F2F2).setStrokeStyle(1, 0x4D4D4D);
         this.dialogueBox.setInteractive({ useHandCursor: true });
         this.dialogueBox.on('pointerdown', () => this.setDialogue(this.nextDialogue));
+
+        this.handPointer = this.add.image(990, 550, 'handPointer').setScale(.03);
+        this.notifEvent = this.time.addEvent({ delay: 500, callback: () => {this.handPointer.visible = !this.handPointer.visible}, callbackScope: this, loop: true });    
+        
         
         this.add.image(180, 380, 'billNameBox').setScale(.75);
 
