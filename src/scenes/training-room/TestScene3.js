@@ -182,14 +182,10 @@ class TestScene3 extends Phaser.Scene {
     }
 
     updatePlayerStatistics () {
-        var currentAttempts = this.player['statistics'][1]['attempts'];
-        var newAttempts = this.attemptNumber.toString();
-        var newTime = this.currentTimer ? this.currentTimer.toString() : "None";
-        if (currentAttempts == 0 || newAttempts < currentAttempts) {
-            this.player['statistics'][1]['attempts'] = newAttempts;
-            this.player['statistics'][1]['time'] = newTime;
-        }
+        this.player['statistics'][3]['attempts'] = this.attemptNumber.toString();
+        this.player['statistics'][3]['time'] = this.currentTimer ? this.currentTimer.toString() : "None";
     }
+
     
     clearLevel () {
         const container = this.add.container(0, 0);
